@@ -1,0 +1,17 @@
+:root{
+--ease-out-strong:cubic-bezier(0.16,1,0.3,1); /* @kind other */
+--duration-fast:150ms; /* @kind other */
+--duration-base:300ms; /* @kind other */
+--duration-slow:600ms; /* @kind other */
+--duration-hero:900ms; /* @kind other */
+--stagger-line:100ms /* @kind other */
+}
+@media (prefers-reduced-motion:reduce){
+:root{
+--duration-fast:1ms; /* @kind other */
+--duration-base:1ms; /* @kind other */
+--duration-slow:1ms; /* @kind other */
+--duration-hero:1ms; /* @kind other */
+--stagger-line:0ms /* @kind other */
+}
+}

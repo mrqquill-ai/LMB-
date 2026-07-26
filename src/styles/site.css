@@ -1,0 +1,1513 @@
+@import './tokens.css';
+
+/* ---------------------------------------------------------------------------
+   Semantic text tokens
+
+   The design system defines muted text as a set of per-component alphas. Four
+   of those pairings measured below 4.5:1, so the two that carry small text are
+   promoted to tokens here with the ratio recorded. Change the value once and
+   every use follows.
+   --------------------------------------------------------------------------- */
+
+:root {
+  /* 5.13:1 on --surface-deep */
+  --text-faint-on-deep: rgba(247, 246, 241, 0.62);
+  /* 4.92:1 on --surface-forest */
+  --text-muted-on-forest: rgba(247, 246, 241, 0.8);
+}
+
+/* ---------------------------------------------------------------------------
+   Base
+   --------------------------------------------------------------------------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--lmb-cream);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--lmb-cream);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--lmb-gold);
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 3px;
+}
+
+img {
+  max-width: 100%;
+}
+
+.lmb-shell {
+  position: relative;
+  background: var(--lmb-cream);
+  min-height: 100vh;
+  font-family: var(--font-body);
+}
+
+.lmb-container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+}
+
+/* ---------------------------------------------------------------------------
+   Cadence rule, the dashed drumline divider that stands in for hairlines
+   --------------------------------------------------------------------------- */
+
+.lmb-rule {
+  height: 1px;
+}
+
+.lmb-rule-gold {
+  background-image: repeating-linear-gradient(to right, var(--lmb-gold) 0 8px, transparent 8px 15px);
+}
+
+.lmb-rule-forest {
+  background-image: repeating-linear-gradient(
+    to right,
+    var(--lmb-green-forest) 0 8px,
+    transparent 8px 15px
+  );
+}
+
+/* ---------------------------------------------------------------------------
+   Motion
+   --------------------------------------------------------------------------- */
+
+@keyframes lmb-dash-draw {
+  from {
+    width: 0;
+  }
+  to {
+    width: 88px;
+  }
+}
+
+@keyframes lmb-seam-draw {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes lmb-line-reveal {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes lmb-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes lmb-photo-settle {
+  from {
+    transform: scale(1.06);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Navigation
+   --------------------------------------------------------------------------- */
+
+.lmb-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28px 56px;
+  background: transparent;
+  transition: padding 420ms var(--ease-out-strong);
+}
+
+.lmb-nav-scrolled {
+  padding: 18px 56px;
+}
+
+.lmb-nav-logo-wrap {
+  display: inline-flex;
+  align-items: center;
+  padding: 0;
+  background: transparent;
+  border-radius: 10px;
+  transition:
+    padding 420ms var(--ease-out-strong),
+    background 420ms var(--ease-out-strong);
+}
+
+.lmb-nav-scrolled .lmb-nav-logo-wrap {
+  padding: 4px 16px;
+  background: rgba(1, 58, 30, 0.55);
+  backdrop-filter: blur(14px);
+}
+
+.lmb-nav-logo {
+  height: 72px;
+  width: auto;
+  display: block;
+  filter: drop-shadow(0 2px 10px rgba(1, 58, 30, 0.55));
+  transition: height 420ms var(--ease-out-strong);
+}
+
+.lmb-nav-scrolled .lmb-nav-logo {
+  height: 46px;
+}
+
+.lmb-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 6px 6px 22px;
+  background: rgba(1, 58, 30, 0.55);
+  backdrop-filter: blur(14px);
+  border-radius: 10px;
+}
+
+.lmb-nav-group {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  margin-right: 22px;
+}
+
+.lmb-nav-link {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(247, 246, 241, 0.82);
+}
+
+.lmb-nav-link-active {
+  color: var(--lmb-gold);
+}
+
+.lmb-nav-cta {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--lmb-ink);
+  background: var(--lmb-cream);
+  padding: 12px 20px;
+  border-radius: 8px;
+  transition: background 180ms var(--ease-out-strong);
+}
+
+.lmb-nav-cta:hover {
+  background: var(--lmb-gold);
+  color: var(--lmb-ink);
+}
+
+/* Mobile menu. Set in the small-caps label style rather than an icon, since the
+   design system deliberately ships without an icon set. */
+.lmb-menu-button {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  min-width: 88px;
+  min-height: 44px;
+  padding: 0 20px;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--lmb-cream);
+  background: rgba(1, 58, 30, 0.72);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(247, 246, 241, 0.22);
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.lmb-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  background: var(--surface-deep);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 48px;
+  padding: 96px 28px calc(48px + env(safe-area-inset-bottom));
+}
+
+/* The sheet shares the header's stacking context, so the logo and the Close
+   button are lifted above it. Escape is not an escape route on a phone. */
+.lmb-nav-logo-wrap,
+.lmb-menu-button {
+  position: relative;
+  z-index: 31;
+}
+
+/* The logo's drop shadow separates it from photography. Over the menu's flat
+   field it traces the PNG's bitmap edge instead, so it comes off there. */
+.lmb-nav-menu-open .lmb-nav-logo {
+  filter: none;
+}
+
+.lmb-menu-links {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.lmb-menu-links a {
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: clamp(2.5rem, 13vw, 4rem);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  color: var(--lmb-cream);
+  padding: 6px 0;
+}
+
+.lmb-menu-link-active {
+  color: var(--lmb-gold);
+}
+
+.lmb-menu-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+/* ---------------------------------------------------------------------------
+   Shared link and button treatments
+   --------------------------------------------------------------------------- */
+
+.lmb-cta-solid {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--lmb-gold);
+  color: var(--lmb-ink);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 16px 26px;
+  border-radius: 9px;
+  transition: transform 180ms var(--ease-out-strong);
+}
+
+.lmb-cta-solid:hover {
+  transform: translateY(-2px);
+  color: var(--lmb-ink);
+}
+
+.lmb-cta-solid span {
+  font-size: 0.875rem;
+}
+
+.lmb-link-underline {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding-bottom: 3px;
+  transition:
+    color 180ms var(--ease-out-strong),
+    border-color 180ms var(--ease-out-strong);
+}
+
+.lmb-link-on-dark {
+  color: rgba(247, 246, 241, 0.78);
+  border-bottom: 1px solid rgba(247, 246, 241, 0.28);
+}
+
+.lmb-link-on-dark:hover {
+  color: var(--lmb-gold);
+  border-bottom-color: var(--lmb-gold);
+}
+
+.lmb-link-on-dark-strong {
+  color: var(--lmb-cream);
+  border-bottom: 1px solid rgba(247, 246, 241, 0.28);
+}
+
+.lmb-link-on-dark-strong:hover {
+  color: var(--lmb-gold);
+  border-bottom-color: var(--lmb-gold);
+}
+
+.lmb-link-on-cream {
+  color: var(--lmb-ink);
+  border-bottom: 1px solid rgba(11, 26, 18, 0.24);
+}
+
+.lmb-link-on-cream:hover {
+  color: var(--lmb-green-forest);
+  border-bottom-color: var(--lmb-green-forest);
+}
+
+/* ---------------------------------------------------------------------------
+   Section furniture
+   --------------------------------------------------------------------------- */
+
+.lmb-section {
+  padding: 104px 56px 96px;
+}
+
+.lmb-section-cream {
+  background: var(--surface-cream);
+  color: var(--text-on-cream);
+}
+
+.lmb-section-deep {
+  background: var(--surface-deep);
+  color: var(--text-on-dark);
+}
+
+.lmb-section-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px 64px;
+}
+
+.lmb-eyebrow {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+
+.lmb-eyebrow-forest {
+  color: var(--lmb-green-forest);
+}
+
+.lmb-eyebrow-dark {
+  color: rgba(247, 246, 241, 0.6);
+}
+
+.lmb-head-main {
+  flex: 1 1 420px;
+}
+
+.lmb-head-aside {
+  flex: 1 1 320px;
+  min-width: 280px;
+  max-width: 420px;
+}
+
+.lmb-head-aside-stack {
+  flex: 1 1 300px;
+  min-width: 280px;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.lmb-h2 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  line-height: 0.92;
+  font-size: clamp(2.25rem, 4.4vw, 4rem);
+  margin: 0;
+}
+
+.lmb-h2-on-dark {
+  color: var(--lmb-cream);
+}
+
+.lmb-h2-lead {
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: -0.015em;
+  line-height: 0.9;
+  font-size: clamp(2.75rem, 6vw, 5.5rem);
+  margin: 0;
+  color: var(--lmb-cream);
+}
+
+.lmb-h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 1.5rem;
+  letter-spacing: 0.01em;
+  margin: 0;
+}
+
+.lmb-lede {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.lmb-lede-on-cream {
+  color: var(--text-muted-on-cream);
+}
+
+.lmb-lede-on-dark {
+  color: var(--text-muted-on-dark);
+}
+
+.lmb-measure-12 {
+  max-width: 12ch;
+}
+
+.lmb-measure-14 {
+  max-width: 14ch;
+}
+
+/* ---------------------------------------------------------------------------
+   Hero
+   --------------------------------------------------------------------------- */
+
+.lmb-hero {
+  position: relative;
+  background: var(--surface-deep);
+  overflow: hidden;
+}
+
+.lmb-split {
+  display: flex;
+  align-items: stretch;
+  min-height: min(880px, 100vh);
+}
+
+.lmb-type {
+  width: 56%;
+  color: var(--text-on-dark);
+  padding: 132px 56px 56px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 64px;
+  position: relative;
+  overflow: hidden;
+}
+
+.lmb-dash {
+  height: 1px;
+  margin-bottom: 22px;
+  background-image: repeating-linear-gradient(to right, var(--lmb-gold) 0 8px, transparent 8px 15px);
+}
+
+.lmb-kicker {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: rgba(247, 246, 241, 0.6);
+}
+
+.lmb-h1 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: -0.015em;
+  line-height: 0.88;
+  font-size: clamp(3.25rem, 7.2vw, 7.5rem);
+  margin: 24px 0 0;
+  color: var(--lmb-cream);
+}
+
+.lmb-foot {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 32px 48px;
+}
+
+.lmb-subhead {
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--text-muted-on-dark);
+  flex: 1 1 300px;
+  max-width: 380px;
+  min-width: 280px;
+  margin: 0;
+}
+
+.lmb-cta-row {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  flex-shrink: 0;
+}
+
+.lmb-seam {
+  width: 1px;
+  background: var(--lmb-gold);
+  flex-shrink: 0;
+  align-self: stretch;
+  transform-origin: top;
+}
+
+.lmb-photo-wrap {
+  width: 44%;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.lmb-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 22%;
+}
+
+/* ---------------------------------------------------------------------------
+   About, the two arms
+   --------------------------------------------------------------------------- */
+
+.lmb-arms {
+  display: flex;
+  align-items: stretch;
+  gap: 56px;
+}
+
+.lmb-arm {
+  flex: 1 1 0;
+  min-width: 260px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.lmb-arm-frame {
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: 8px;
+  background: var(--surface-forest);
+}
+
+.lmb-arm-frame img {
+  width: 100%;
+  height: 112%;
+  margin-top: -6%;
+  object-fit: cover;
+  object-position: 50% 30%;
+  display: block;
+  will-change: transform;
+}
+
+/* Stands in for the choir photograph: the arm's name in the display face,
+   with the cadence rule beneath it. A composed panel, not a missing-asset note. */
+.lmb-arm-panel {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  border-radius: 8px;
+  background: var(--surface-forest);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 20px;
+  padding: 28px;
+}
+
+.lmb-arm-panel-word {
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: clamp(3rem, 7vw, 5.5rem);
+  line-height: 0.86;
+  letter-spacing: -0.015em;
+  color: rgba(247, 246, 241, 0.14);
+}
+
+.lmb-arm-panel-rule {
+  height: 1px;
+  width: 88px;
+  background-image: repeating-linear-gradient(to right, var(--lmb-gold) 0 8px, transparent 8px 15px);
+}
+
+.lmb-arm-title-row {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin-bottom: 12px;
+}
+
+.lmb-arm-meta {
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--lmb-green-forest);
+  font-weight: 600;
+}
+
+.lmb-arm-copy {
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: var(--text-muted-on-cream);
+  margin: 0;
+  max-width: 40ch;
+}
+
+.lmb-arms-rule {
+  width: 1px;
+  flex-shrink: 0;
+  align-self: stretch;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    var(--lmb-green-forest) 0 8px,
+    transparent 8px 15px
+  );
+}
+
+/* ---------------------------------------------------------------------------
+   Package cards
+   --------------------------------------------------------------------------- */
+
+.lmb-packages {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.lmb-svc-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.lmb-card {
+  border-radius: 9px;
+  padding: 32px 28px 30px;
+  display: flex;
+  flex-direction: column;
+}
+
+.lmb-card-preview {
+  gap: 28px;
+}
+
+.lmb-card-full {
+  gap: 24px;
+}
+
+/* Home preview: featured card is cream on the deep-green section. */
+.lmb-card-preview.lmb-card-featured {
+  background: var(--lmb-cream);
+  color: var(--text-on-cream);
+  box-shadow: 0 18px 40px -24px rgba(1, 58, 30, 0.55);
+}
+
+.lmb-card-preview.lmb-card-plain {
+  background: var(--surface-forest);
+  color: var(--lmb-cream);
+}
+
+/* Services page: featured card is forest on the cream section. */
+.lmb-card-full.lmb-card-featured {
+  background: var(--surface-forest);
+  color: var(--lmb-cream);
+  box-shadow: 0 18px 40px -24px rgba(1, 58, 30, 0.5);
+}
+
+.lmb-card-full.lmb-card-plain {
+  background: #fff;
+  color: var(--text-on-cream);
+  box-shadow: 0 18px 40px -30px rgba(11, 26, 18, 0.4);
+}
+
+.lmb-card-head {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.lmb-card-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 1.375rem;
+  letter-spacing: 0.01em;
+  margin: 0;
+}
+
+.lmb-card-meta {
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.lmb-card-preview.lmb-card-featured .lmb-card-meta {
+  color: var(--lmb-green-forest);
+}
+
+.lmb-card-preview.lmb-card-plain .lmb-card-meta {
+  color: var(--text-muted-on-forest);
+}
+
+.lmb-card-full.lmb-card-featured .lmb-card-meta {
+  color: var(--text-muted-on-forest);
+}
+
+.lmb-card-full.lmb-card-plain .lmb-card-meta {
+  color: var(--lmb-green-forest);
+}
+
+.lmb-card-price {
+  margin: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.lmb-card-currency {
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 600;
+  opacity: 0.72;
+}
+
+.lmb-card-figure {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 2.5rem;
+  letter-spacing: -0.01em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+/* The cadence motif at list-marker scale, replacing the dash bullet. */
+.lmb-beat {
+  flex-shrink: 0;
+  width: 4px;
+  height: 4px;
+  margin-top: 0.55em;
+  background: var(--lmb-green-forest);
+}
+
+.lmb-card-full.lmb-card-featured .lmb-beat,
+.lmb-book-terms .lmb-beat {
+  background: var(--lmb-gold);
+}
+
+.lmb-card-note {
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.lmb-card-preview .lmb-card-note {
+  margin-top: auto;
+}
+
+.lmb-card-preview.lmb-card-featured .lmb-card-note {
+  color: var(--text-muted-on-cream);
+}
+
+.lmb-card-preview.lmb-card-plain .lmb-card-note {
+  color: rgba(247, 246, 241, 0.78);
+}
+
+.lmb-card-full.lmb-card-featured .lmb-card-note {
+  color: rgba(247, 246, 241, 0.82);
+}
+
+.lmb-card-full.lmb-card-plain .lmb-card-note {
+  color: var(--text-muted-on-cream);
+}
+
+.lmb-card-terms {
+  margin: auto 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
+
+.lmb-card-full.lmb-card-featured .lmb-card-terms {
+  color: var(--text-muted-on-forest);
+}
+
+.lmb-card-full.lmb-card-plain .lmb-card-terms {
+  color: var(--text-muted-on-cream);
+}
+
+.lmb-card-terms li {
+  display: flex;
+  gap: 10px;
+}
+
+.lmb-packages-note {
+  margin-top: 32px;
+  font-size: 0.8125rem;
+  color: var(--text-faint-on-deep);
+  line-height: 1.6;
+}
+
+/* ---------------------------------------------------------------------------
+   Gallery
+   --------------------------------------------------------------------------- */
+
+.lmb-proof {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 24px;
+  align-items: stretch;
+}
+
+.lmb-proof-lead {
+  border-radius: 9px;
+  overflow: hidden;
+  min-height: 420px;
+}
+
+.lmb-proof-lead img {
+  width: 100%;
+  height: 114%;
+  margin-top: -7%;
+  object-fit: cover;
+  display: block;
+  will-change: transform;
+}
+
+.lmb-proof-side {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  gap: 24px;
+}
+
+/* No client quote yet, so the snare photograph takes the whole column. */
+.lmb-proof-side-single {
+  grid-template-rows: 1fr;
+}
+
+.lmb-proof-snare {
+  border-radius: 9px;
+  overflow: hidden;
+}
+
+.lmb-proof-snare img {
+  width: 100%;
+  height: 116%;
+  margin-top: -8%;
+  object-fit: cover;
+  object-position: 50% 25%;
+  display: block;
+  will-change: transform;
+}
+
+.lmb-quote-card {
+  margin: 0;
+  background: #fff;
+  border-radius: 9px;
+  padding: 28px;
+  box-shadow: 0 18px 40px -28px rgba(11, 26, 18, 0.4);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.lmb-quote-card blockquote {
+  font-family: var(--font-display);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 1.25rem;
+  line-height: 1.12;
+  letter-spacing: 0.01em;
+  margin: 0;
+}
+
+.lmb-quote-attribution {
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--lmb-green-forest);
+  font-weight: 600;
+  line-height: 1.7;
+}
+
+.lmb-events {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 40px;
+  margin-top: 40px;
+  font-size: 0.8125rem;
+  color: var(--text-muted-on-cream);
+}
+
+/* ---------------------------------------------------------------------------
+   Services route
+   --------------------------------------------------------------------------- */
+
+.lmb-svc-hero {
+  padding: 172px 56px 96px;
+}
+
+.lmb-svc-packages {
+  padding: 88px 56px 96px;
+}
+
+.lmb-svc-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 32px 64px;
+}
+
+.lmb-svc-h1 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: -0.015em;
+  line-height: 0.9;
+  font-size: clamp(2.75rem, 6vw, 5.5rem);
+  margin: 0;
+  color: var(--lmb-cream);
+}
+
+.lmb-svc-opts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px 64px;
+  align-items: flex-start;
+}
+
+.lmb-svc-head-main {
+  flex: 1 1 480px;
+}
+
+.lmb-svc-opts-intro {
+  flex: 0 1 260px;
+}
+
+.lmb-svc-opts-intro h3 {
+  margin: 0 0 12px;
+}
+
+.lmb-svc-opts-copy {
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: var(--text-muted-on-cream);
+  margin: 0;
+}
+
+.lmb-svc-opts-list {
+  flex: 1 1 420px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 32px;
+  font-size: 0.9375rem;
+  color: var(--text-on-cream);
+}
+
+/* ---------------------------------------------------------------------------
+   Contact and footer
+   --------------------------------------------------------------------------- */
+
+.lmb-contact {
+  padding: 112px 56px 48px;
+}
+
+.lmb-book {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 520px);
+  /* The form is roughly twice the height of the copy beside it. Centring the
+     copy against it reads as balance; top-aligning left a void underneath. */
+  align-items: center;
+  gap: 40px 72px;
+  padding-bottom: 96px;
+}
+
+.lmb-book-main {
+  min-width: 0;
+}
+
+.lmb-book-copy {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--text-muted-on-dark);
+  margin: 24px 0 0;
+  max-width: 420px;
+}
+
+.lmb-book-terms {
+  list-style: none;
+  margin: 32px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--text-muted-on-dark);
+}
+
+.lmb-book-terms li {
+  display: flex;
+  gap: 12px;
+}
+
+.lmb-book-direct {
+  display: inline-block;
+  margin-top: 32px;
+}
+
+/* ---------------------------------------------------------------------------
+   Booking form
+   --------------------------------------------------------------------------- */
+
+.lmb-form-panel {
+  background: rgba(247, 246, 241, 0.04);
+  border: 1px solid rgba(247, 246, 241, 0.14);
+  border-radius: 9px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  color-scheme: dark;
+}
+
+.lmb-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.lmb-field-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.lmb-label {
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--lmb-cream);
+}
+
+.lmb-label-optional {
+  margin-left: 8px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--text-faint-on-deep);
+}
+
+.lmb-input {
+  /* 16px keeps iOS from zooming the viewport on focus. */
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.4;
+  color: var(--lmb-cream);
+  background: rgba(1, 58, 30, 0.55);
+  border: 1px solid var(--border-on-dark);
+  border-radius: 8px;
+  padding: 13px 15px;
+  min-height: 48px;
+  width: 100%;
+  transition:
+    border-color 180ms var(--ease-out-strong),
+    background 180ms var(--ease-out-strong);
+}
+
+.lmb-input::placeholder {
+  color: var(--text-faint-on-deep);
+}
+
+.lmb-input:hover {
+  border-color: rgba(247, 246, 241, 0.38);
+}
+
+.lmb-input:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+  border-color: var(--lmb-gold);
+}
+
+/* Red alone cannot carry an error here: brand red on deepest green measures
+   2.72:1. The invalid state is a full-contrast cream border plus a red marker
+   and a written message, so it never depends on colour. */
+.lmb-input-invalid {
+  border-color: var(--lmb-cream);
+  border-width: 2px;
+}
+
+.lmb-textarea {
+  resize: vertical;
+  min-height: 92px;
+  padding-top: 13px;
+}
+
+.lmb-select-wrap {
+  position: relative;
+  display: block;
+}
+
+.lmb-select {
+  appearance: none;
+  padding-right: 44px;
+  cursor: pointer;
+}
+
+.lmb-select-wrap::after {
+  content: '';
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  border-right: 1.5px solid var(--lmb-cream);
+  border-bottom: 1.5px solid var(--lmb-cream);
+  transform: translateY(-70%) rotate(45deg);
+  pointer-events: none;
+}
+
+.lmb-help {
+  margin: 0;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: var(--text-faint-on-deep);
+}
+
+.lmb-error {
+  margin: 0;
+  display: flex;
+  gap: 10px;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--lmb-cream);
+}
+
+.lmb-error-mark {
+  flex-shrink: 0;
+  width: 4px;
+  height: 4px;
+  margin-top: 0.5em;
+  background: var(--accent-alert);
+}
+
+.lmb-form-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: flex-start;
+  margin-top: 4px;
+}
+
+.lmb-submit {
+  border: 0;
+  font-family: var(--font-body);
+  cursor: pointer;
+  min-height: 48px;
+}
+
+/* Dimming the gold turns it olive against the deep green. The unavailable state
+   drops the fill entirely instead, and keeps the label legible. */
+.lmb-submit:disabled {
+  background: transparent;
+  color: var(--text-faint-on-deep);
+  box-shadow: inset 0 0 0 1px rgba(247, 246, 241, 0.22);
+  cursor: not-allowed;
+}
+
+.lmb-submit:disabled:hover {
+  transform: none;
+  color: var(--text-faint-on-deep);
+}
+
+.lmb-form-note {
+  max-width: 40ch;
+}
+
+.lmb-form-done {
+  gap: 16px;
+}
+
+.lmb-form-done .lmb-h3 {
+  color: var(--lmb-cream);
+}
+
+.lmb-form-done-copy {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--text-muted-on-dark);
+}
+
+.lmb-form-restart {
+  align-self: flex-start;
+  background: none;
+  border-width: 0 0 1px 0;
+  cursor: pointer;
+  font-family: var(--font-body);
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.lmb-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 40px 64px;
+  padding: 40px 0 32px;
+}
+
+.lmb-footer-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  flex: 0 1 320px;
+}
+
+.lmb-footer-brand img {
+  height: 64px;
+  width: auto;
+  align-self: flex-start;
+  display: block;
+}
+
+.lmb-footer-brand-note {
+  font-size: 0.8125rem;
+  line-height: 1.7;
+  color: rgba(247, 246, 241, 0.6);
+}
+
+.lmb-footer-cols {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 56px;
+}
+
+.lmb-footer-col {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.lmb-footer-col-head {
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-faint-on-deep);
+  font-weight: 600;
+}
+
+.lmb-footer-col a,
+.lmb-footer-col div:not(.lmb-footer-col-head) {
+  font-size: 0.875rem;
+  color: rgba(247, 246, 241, 0.82);
+}
+
+.lmb-colophon {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 12px 32px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(247, 246, 241, 0.12);
+  font-size: 0.75rem;
+  color: var(--text-faint-on-deep);
+}
+
+/* ---------------------------------------------------------------------------
+   Responsive
+   --------------------------------------------------------------------------- */
+
+@media (max-width: 1180px) and (min-width: 901px) {
+  .lmb-svc-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 1023px) {
+  .lmb-book {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 48px;
+  }
+
+  .lmb-book-copy,
+  .lmb-form-panel {
+    max-width: 560px;
+  }
+}
+
+@media (max-width: 900px) {
+  .lmb-split {
+    flex-direction: column-reverse;
+  }
+
+  .lmb-type {
+    width: 100%;
+    padding: 40px 28px 40px;
+    gap: 32px;
+  }
+
+  /* A 4:5 photograph pushed the hero CTA about 300px below the fold on a
+     390x844 phone. Capping the crop keeps the primary action in the first
+     screen, which is where this site earns its bookings. */
+  .lmb-photo-wrap {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    max-height: 40vh;
+  }
+
+  .lmb-seam {
+    width: 100%;
+    height: 1px;
+  }
+
+  .lmb-nav {
+    padding: 20px 28px;
+  }
+
+  .lmb-nav-scrolled {
+    padding: 14px 28px;
+  }
+
+  .lmb-nav-logo {
+    height: 52px;
+  }
+
+  .lmb-nav-scrolled .lmb-nav-logo {
+    height: 40px;
+  }
+
+  .lmb-nav-links {
+    display: none;
+  }
+
+  .lmb-menu-button {
+    display: inline-flex;
+  }
+
+  .lmb-foot {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 28px;
+  }
+
+  /* CTA ahead of the supporting sentence on small screens, and stacked so
+     neither label wraps at 390px. */
+  .lmb-cta-row {
+    order: -1;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .lmb-form-panel {
+    padding: 24px;
+  }
+
+  .lmb-field-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .lmb-arms {
+    flex-direction: column;
+    gap: 48px;
+  }
+
+  .lmb-arms-rule {
+    width: 100%;
+    height: 1px;
+    background-image: repeating-linear-gradient(
+      to right,
+      var(--lmb-green-forest) 0 8px,
+      transparent 8px 15px
+    );
+  }
+
+  .lmb-section {
+    padding: 72px 28px 80px;
+  }
+
+  .lmb-svc-hero {
+    padding: 132px 28px 72px;
+  }
+
+  .lmb-svc-packages {
+    padding: 72px 28px 80px;
+  }
+
+  .lmb-packages,
+  .lmb-svc-grid,
+  .lmb-proof {
+    grid-template-columns: 1fr;
+  }
+
+  .lmb-contact {
+    padding: 72px 28px 40px;
+  }
+
+  .lmb-book {
+    padding-bottom: 64px;
+  }
+}
+
+/* Reduced motion: every entrance lands in its final state immediately. Scroll
+   parallax is skipped in JS, so no transform is written to the photographs. */
+@media (prefers-reduced-motion: reduce) {
+  .lmb-dash,
+  .lmb-seam,
+  .lmb-line,
+  .lmb-fade,
+  .lmb-photo,
+  .lmb-view {
+    animation: none !important;
+    transition: none !important;
+    clip-path: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .lmb-dash {
+    width: 88px !important;
+  }
+}
