@@ -1,0 +1,30 @@
+{
+  "widths": [
+    480,
+    720,
+    1080,
+    1440
+  ],
+  "photos": {
+    "assembly-wide": {
+      "width": 1920,
+      "height": 2560
+    },
+    "bandmajor-mace": {
+      "width": 1920,
+      "height": 2560
+    },
+    "hero-saxophonist": {
+      "width": 1920,
+      "height": 2560
+    },
+    "snare-player": {
+      "width": 1920,
+      "height": 2560
+    }
+  },
+  "logo": {
+    "width": 1080,
+    "height": 574
+  }
+}

@@ -4,14 +4,86 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#013A1E" />
+
+    <title>Lagos Musical Band. One band, one sound, one voice.</title>
     <meta
       name="description"
-      content="Lagos Musical Band. Drumline, horns and choir for parades, ceremonies and private events across Lagos. Book a formation that fits your space."
+      content="Drumline, horns and choir for parades, ceremonies and private events across Lagos. Pick a formation that fits your space and send the band your date."
     />
-    <link rel="icon" href="/assets/logos/lmb-logo-white.png" />
+    <link rel="canonical" href="%VITE_SITE_URL%/" />
+
+    <!-- Most of this site will be shared as a WhatsApp link, so the card matters. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Lagos Musical Band" />
+    <meta property="og:locale" content="en_NG" />
+    <meta property="og:url" content="%VITE_SITE_URL%/" />
+    <meta property="og:title" content="Lagos Musical Band. One band, one sound, one voice." />
+    <meta
+      property="og:description"
+      content="Drumline, horns and choir for parades, ceremonies and private events across Lagos. Pick a formation that fits your space."
+    />
+    <meta property="og:image" content="%VITE_SITE_URL%/assets/social/share-card.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="The Lagos Musical Band assembled on the parade ground with drums, horns and cymbals"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="icon" href="/assets/logos/lmb-logo-white-320.png" />
+    <link rel="apple-touch-icon" href="/assets/logos/lmb-logo-white-320.png" />
+
+    <!-- Discovered in the head rather than three CSS imports deep, so the fonts
+         start downloading alongside the stylesheet instead of after it. -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <title>Lagos Musical Band. One band, one sound, one voice.</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap"
+    />
+    <!-- Preloads the LCP image at the width the viewport will actually pick.
+         Without imagesrcset the preload pins one variant and a phone downloads
+         the desktop crop. Must stay in step with the sizes in Photo.tsx. -->
+    <link
+      rel="preload"
+      as="image"
+      type="image/avif"
+      imagesrcset="
+        /assets/photos/hero-saxophonist-480.avif   480w,
+        /assets/photos/hero-saxophonist-720.avif   720w,
+        /assets/photos/hero-saxophonist-1080.avif 1080w,
+        /assets/photos/hero-saxophonist-1440.avif 1440w"
+      imagesizes="(max-width: 900px) 100vw, 44vw"
+    />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "MusicGroup",
+        "name": "Lagos Musical Band",
+        "alternateName": "LMB",
+        "description": "A marching brigade and choir working across Lagos State. Drumline, horns and voices for parades, matriculation marches, church services, weddings, memorials and corporate events.",
+        "url": "%VITE_SITE_URL%/",
+        "image": "%VITE_SITE_URL%/assets/social/share-card.jpg",
+        "logo": "%VITE_SITE_URL%/assets/logos/lmb-logo-white-320.png",
+        "slogan": "One band, one sound, one voice.",
+        "genre": ["Marching band", "Brass band", "Choral"],
+        "address": {
+          "@type": "PostalAddress",
+          "addressRegion": "Lagos State",
+          "addressCountry": "NG"
+        },
+        "areaServed": {
+          "@type": "AdministrativeArea",
+          "name": "Lagos State, Nigeria"
+        },
+        "memberOf": {
+          "@type": "Organization",
+          "name": "National Youth Service Corps Community Development Service"
+        }
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

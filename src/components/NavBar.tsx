@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type MouseEvent } from 'react';
+import { Logo } from './Photo';
 import { whatsappHref } from '../data/contact';
 import { scrollToSection } from '../lib/scrollToSection';
 import type { Navigate, Route } from '../lib/useRoute';
@@ -56,7 +57,7 @@ export function NavBar({ route, scrolled, navigate }: Props) {
       }`}
     >
       <a href="#/" onClick={go('home')} className="lmb-nav-logo-wrap">
-        <img className="lmb-nav-logo" src="/assets/logos/lmb-logo-white.png" alt="Lagos Musical Band" />
+        <Logo className="lmb-nav-logo" />
       </a>
 
       <nav className="lmb-nav-links" aria-label="Primary">

@@ -1,10 +1,14 @@
 import { CadenceRule } from '../components/CadenceRule';
+import { Photo } from '../components/Photo';
 import { choirPhoto } from '../data/content';
 import { useParallax } from '../lib/useParallax';
 
+/** Two columns from 901px, stacked below it. */
+const ARM_SIZES = '(max-width: 900px) 100vw, (max-width: 1352px) 45vw, 560px';
+
 export function About() {
-  const bandMajorRef = useParallax(48);
-  const choirRef = useParallax(48);
+  const bandMajor = useParallax(48);
+  const choir = useParallax(48);
 
   return (
     <section id="about" className="lmb-section lmb-section-cream">
@@ -23,10 +27,11 @@ export function About() {
 
         <div className="lmb-arms">
           <div className="lmb-arm">
-            <div className="lmb-arm-frame">
-              <img
-                ref={bandMajorRef}
-                src="/assets/photos/bandmajor-mace.jpg"
+            <div className="lmb-arm-frame" ref={bandMajor.frameRef}>
+              <Photo
+                ref={bandMajor.imageRef}
+                name="bandmajor-mace"
+                sizes={ARM_SIZES}
                 alt="Band major of the Lagos Musical Band holding the mace, drumline behind"
               />
             </div>
@@ -46,8 +51,13 @@ export function About() {
 
           <div className="lmb-arm">
             {choirPhoto ? (
-              <div className="lmb-arm-frame">
-                <img ref={choirRef} src={choirPhoto.src} alt={choirPhoto.alt} />
+              <div className="lmb-arm-frame" ref={choir.frameRef}>
+                <Photo
+                  ref={choir.imageRef}
+                  name={choirPhoto.name}
+                  sizes={ARM_SIZES}
+                  alt={choirPhoto.alt}
+                />
               </div>
             ) : (
               // Until the band supplies choir photography this panel carries the

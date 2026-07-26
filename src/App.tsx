@@ -26,9 +26,15 @@ export default function App() {
 
   return (
     <div className="lmb-shell">
+      <a className="lmb-skip" href="#main">
+        Skip to content
+      </a>
+
       <NavBar route={route} scrolled={scrolled} navigate={navigate} />
 
       <main
+        id="main"
+        tabIndex={-1}
         className="lmb-view"
         style={{
           opacity: leaving ? 0 : 1,

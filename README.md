@@ -6,6 +6,15 @@ attendance app.
 
 Built from the Claude Design handoff `# LMB Home Hero Plan` (`LMB Home Hero v2.dc.html`).
 
+## Before you deploy
+
+Two values need real content or the site ships broken in ways that are easy to miss:
+
+1. **`VITE_SITE_URL` in `.env`** is a `.example` placeholder. It is substituted into the canonical
+   link, the Open Graph card and the structured data at build time. Until it points at the live
+   domain, WhatsApp and search previews will not resolve.
+2. **A booking channel in `src/data/contact.ts`.** See "Turning booking on" below.
+
 ## Stack
 
 React 18, TypeScript, Vite. No CSS framework: every value in the design is expressed through the
@@ -15,21 +24,46 @@ LMB design tokens, so the site uses plain CSS with custom properties instead.
 npm install
 npm run dev      # http://localhost:5175
 npm run build    # type-check, then production build to dist/
+npm run images   # regenerate image derivatives from assets-src/
 npm run preview
 ```
+
+## Images
+
+`assets-src/` holds the band's originals, which are 1920x2560 phone portraits and are never served.
+`npm run images` writes AVIF, WebP and JPEG derivatives at 480, 720, 1080 and 1440 wide into
+`public/assets/`, plus the 1200x630 social card and a 320w logo, and records the intrinsic
+dimensions in `src/data/imageSizes.json` so `<img>` can reserve its box.
+
+Measured against the originals, which the page used to serve directly:
+
+| | before | after |
+|---|---|---|
+| Desktop, 1x | 2023kB | **295kB** |
+| Phone, 1x | 2023kB | **122kB** |
+| Phone, 2x | 2023kB | **266kB** |
+
+Adding a photograph means dropping it into `assets-src/photos/`, running `npm run images`, and
+referencing it by filename through the `Photo` component. `PhotoName` widens automatically.
 
 ## Layout
 
 ```
 src/
-  App.tsx                 route shell, nav, page transition
-  components/             NavBar, CadenceRule, PackageCard
+  App.tsx                 route shell, skip link, nav, page transition
   sections/               Hero, About, ServicesPreview, Gallery, ServicesPage, Contact
-  components/BookingForm.tsx
+  components/
+    NavBar.tsx            fixed nav, and the mobile menu sheet
+    BookingForm.tsx       the booking form and its validation
+    Photo.tsx             responsive AVIF/WebP/JPEG picture, and the logo
+    PackageCard.tsx       formation card, preview and full variants
+    CadenceRule.tsx       the dashed drumline divider
   data/
     packages.ts           the five formation packages and their terms
     contact.ts            the band's contact channels and the enquiry composer
     content.ts            content slots that render only once they are filled
+    photos.ts             the PhotoName type, derived from the image build
+    imageSizes.json       written by npm run images, do not edit by hand
   lib/
     useRoute.ts           hash routing, out/in transition, back and forward
     useParallax.ts        scroll-linked drift on the photographs
@@ -39,12 +73,16 @@ src/
     motion.ts             reduced-motion check, shared fade-in
   styles/
     site.css              all layout, hover and responsive rules
-    tokens.css            imports the design system token files verbatim
+    tokens.css            the design system's own entry point, unused, see below
     tokens/               colors, typography, spacing, motion, effects, fonts
+scripts/build-images.mjs  the image derivative pipeline
+assets-src/               original photography and logo, never served
 ```
 
-`src/styles/tokens/` is copied unchanged from the design system bundle, so a newer version of the
-system can be dropped straight in.
+`site.css` imports the individual token files rather than the vendored `tokens.css`, because that
+file chains through `tokens/fonts.css` and buries the Google Fonts request three stylesheets deep.
+The font request lives in `index.html` instead. Both vendored files are left untouched, so a newer
+version of the design system can still be dropped straight in.
 
 ## Routes
 
@@ -96,6 +134,9 @@ One signature moment, everything else quiet, per the brief.
   blur, clear as soon as the value becomes valid, and carry `role="alert"` with `aria-invalid` and
   `aria-describedby`. Submitting an incomplete form focuses the first invalid field.
 - Inputs are at least 48px tall and set at 16px, which keeps iOS from zooming on focus.
+- A skip link is the first tabbable element and targets `#main`.
+- The nav pill crosses the hero photograph, where contrast cannot be measured against a fixed
+  background. It carries a 0.72 scrim and a hairline edge so the labels hold over bright frames.
 
 ## Content still pending from the band
 

@@ -1,6 +1,7 @@
 import type { MouseEvent } from 'react';
 import { BookingForm } from '../components/BookingForm';
 import { CadenceRule } from '../components/CadenceRule';
+import { Logo } from '../components/Photo';
 import { contact, whatsappHref } from '../data/contact';
 import type { Navigate } from '../lib/useRoute';
 
@@ -74,7 +75,7 @@ export function Contact({ navigate }: Props) {
 
         <div className="lmb-footer">
           <div className="lmb-footer-brand">
-            <img src="/assets/logos/lmb-logo-white.png" alt="Lagos Musical Band" />
+            <Logo />
             <div className="lmb-footer-brand-note">
               NYSC Community Development Service group.
               <br />

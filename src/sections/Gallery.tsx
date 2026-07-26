@@ -1,4 +1,5 @@
 import { CadenceRule } from '../components/CadenceRule';
+import { Photo } from '../components/Photo';
 import { testimonial } from '../data/content';
 import { useParallax } from '../lib/useParallax';
 
@@ -12,8 +13,8 @@ const EVENTS = [
 ];
 
 export function Gallery() {
-  const assemblyRef = useParallax(56);
-  const snareRef = useParallax(40);
+  const assembly = useParallax(56);
+  const snare = useParallax(40);
 
   return (
     <section id="gallery" className="lmb-section lmb-section-cream">
@@ -31,10 +32,11 @@ export function Gallery() {
         </div>
 
         <div className="lmb-proof">
-          <div className="lmb-proof-lead">
-            <img
-              ref={assemblyRef}
-              src="/assets/photos/assembly-wide.jpg"
+          <div className="lmb-proof-lead" ref={assembly.frameRef}>
+            <Photo
+              ref={assembly.imageRef}
+              name="assembly-wide"
+              sizes="(max-width: 900px) 100vw, 56vw"
               alt="The Lagos Musical Band assembled on the parade ground with drums, horns and cymbals"
             />
           </div>
@@ -42,10 +44,11 @@ export function Gallery() {
           {/* With no client quote yet the snare photograph takes the whole
               column rather than sitting above an empty card. */}
           <div className={`lmb-proof-side${testimonial ? '' : ' lmb-proof-side-single'}`}>
-            <div className="lmb-proof-snare">
-              <img
-                ref={snareRef}
-                src="/assets/photos/snare-player.jpg"
+            <div className="lmb-proof-snare" ref={snare.frameRef}>
+              <Photo
+                ref={snare.imageRef}
+                name="snare-player"
+                sizes="(max-width: 900px) 100vw, 40vw"
                 alt="Snare drummer of the Lagos Musical Band, sticks resting on the head"
               />
             </div>

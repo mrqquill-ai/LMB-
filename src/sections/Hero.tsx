@@ -1,4 +1,5 @@
 import type { CSSProperties, MouseEvent } from 'react';
+import { Photo } from '../components/Photo';
 import { fadeIn } from '../lib/motion';
 import { scrollToSection } from '../lib/scrollToSection';
 
@@ -86,10 +87,12 @@ export function Hero({ play }: Props) {
         <div className="lmb-seam" style={seamStyle} aria-hidden="true" />
 
         <div className="lmb-photo-wrap">
-          <img
+          <Photo
             className="lmb-photo"
             style={photoStyle}
-            src="/assets/photos/hero-saxophonist.jpg"
+            name="hero-saxophonist"
+            sizes="(max-width: 900px) 100vw, 44vw"
+            priority
             alt="Saxophonist of the Lagos Musical Band, low angle"
           />
         </div>
