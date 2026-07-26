@@ -61,21 +61,95 @@ async function buildPhoto(file) {
   return { name, width, height };
 }
 
+/** Alpha at or below this is invisible on screen but still reads as coverage. */
+const ALPHA_FLOOR = 16;
+/** An edge line below this alpha is an artifact, not artwork. */
+const EDGE_ARTIFACT_MAX = 128;
+
+/**
+ * Strips the faint 1px frame baked into the outermost rows and columns of the
+ * crest. Every edge line is fully populated at alpha 67 to 88, which is why the
+ * logo rendered inside a visible rectangle. Walks inward while an edge is fully
+ * covered but too faint to be artwork.
+ */
+function clearEdgeArtifacts(data, width, height) {
+  const alpha = (x, y) => data[(y * width + x) * 4 + 3];
+  const clear = (x, y) => {
+    data[(y * width + x) * 4 + 3] = 0;
+  };
+
+  let cleared = 0;
+  const scan = (coords) => {
+    let max = 0;
+    let covered = 0;
+    for (const [x, y] of coords) {
+      const a = alpha(x, y);
+      if (a > max) max = a;
+      if (a > 0) covered++;
+    }
+    if (covered !== coords.length || max > EDGE_ARTIFACT_MAX) return false;
+    for (const [x, y] of coords) clear(x, y);
+    cleared += coords.length;
+    return true;
+  };
+
+  const row = (y) => Array.from({ length: width }, (_, x) => [x, y]);
+  const col = (x) => Array.from({ length: height }, (_, y) => [x, y]);
+
+  for (let y = 0; y < height && scan(row(y)); y++);
+  for (let y = height - 1; y >= 0 && scan(row(y)); y--);
+  for (let x = 0; x < width && scan(col(x)); x++);
+  for (let x = width - 1; x >= 0 && scan(col(x)); x--);
+
+  return cleared;
+}
+
+/**
+ * The crest also carries a haze of near-transparent pixels across its bitmap,
+ * roughly 13,000 at alpha 2 to 13. Invisible to the eye, but anything reading
+ * the alpha channel sees them. Both cleanups keep the shipped asset honest
+ * about its own silhouette.
+ */
 async function buildLogo() {
   const src = join(SRC_LOGOS, 'lmb-logo-white.png');
   const { width, height } = await sharp(src).metadata();
-  let total = 0;
 
-  // The logo never renders above 135 CSS px, so 320 covers it at 2x.
-  for (const format of ['webp', 'png']) {
-    const info = await sharp(src)
-      .resize({ width: 320, withoutEnlargement: true })
-      [format]({ quality: 90 })
-      .toFile(join(OUT_LOGOS, `lmb-logo-white-320.${format}`));
-    total += info.size;
+  const original = await sharp(src).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
+  const edgePixels = clearEdgeArtifacts(original.data, original.info.width, original.info.height);
+
+  // Floored after the resize: downscaling interpolates the haze back in.
+  const { data, info } = await sharp(original.data, {
+    raw: { width: original.info.width, height: original.info.height, channels: 4 },
+  })
+    .resize({ width: 320, withoutEnlargement: true })
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+
+  let cleared = edgePixels;
+  for (let i = 3; i < data.length; i += 4) {
+    if (data[i] > 0 && data[i] <= ALPHA_FLOOR) {
+      data[i] = 0;
+      cleared++;
+    }
   }
 
-  console.log(`  ${'lmb-logo-white'.padEnd(20)} ${width}x${height} -> 320w, ${kb(total)}`);
+  const cleaned = sharp(data, {
+    raw: { width: info.width, height: info.height, channels: 4 },
+  });
+
+  let total = 0;
+  // The logo never renders above 135 CSS px, so 320 covers it at 2x.
+  for (const format of ['webp', 'png']) {
+    const out = await cleaned
+      .clone()
+      [format]({ quality: 90 })
+      .toFile(join(OUT_LOGOS, `lmb-logo-white-320.${format}`));
+    total += out.size;
+  }
+
+  console.log(
+    `  ${'lmb-logo-white'.padEnd(20)} ${width}x${height} -> 320w, ${kb(total)}, ${cleared} haze pixels cleared`,
+  );
   return { width, height };
 }
 
