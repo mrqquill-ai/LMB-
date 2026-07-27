@@ -23,6 +23,93 @@
       "height": 2560
     }
   },
+  "cutouts": {
+    "bass-drum": {
+      "width": 765,
+      "height": 735,
+      "widths": [
+        459,
+        765
+      ]
+    },
+    "baton": {
+      "width": 358,
+      "height": 831,
+      "widths": [
+        215,
+        358
+      ]
+    },
+    "cymbals": {
+      "width": 510,
+      "height": 676,
+      "widths": [
+        306,
+        510
+      ]
+    },
+    "drumsticks": {
+      "width": 257,
+      "height": 676,
+      "widths": [
+        257
+      ]
+    },
+    "hymnal": {
+      "width": 820,
+      "height": 578,
+      "widths": [
+        492,
+        820
+      ]
+    },
+    "mace": {
+      "width": 157,
+      "height": 1262,
+      "widths": [
+        157
+      ]
+    },
+    "microphone": {
+      "width": 184,
+      "height": 1195,
+      "widths": [
+        184
+      ]
+    },
+    "saxophone": {
+      "width": 412,
+      "height": 934,
+      "widths": [
+        247,
+        412
+      ]
+    },
+    "snare": {
+      "width": 716,
+      "height": 725,
+      "widths": [
+        430,
+        716
+      ]
+    },
+    "trombone": {
+      "width": 1099,
+      "height": 309,
+      "widths": [
+        659,
+        1099
+      ]
+    },
+    "trumpet": {
+      "width": 785,
+      "height": 258,
+      "widths": [
+        471,
+        785
+      ]
+    }
+  },
   "logo": {
     "width": 1080,
     "height": 574

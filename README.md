@@ -46,6 +46,33 @@ Measured against the originals, which the page used to serve directly:
 Adding a photograph means dropping it into `assets-src/photos/`, running `npm run images`, and
 referencing it by filename through the `Photo` component. `PhotoName` widens automatically.
 
+## Cut-outs
+
+`assets-src/cutouts/` holds eleven instrument cut-outs on a real alpha channel, for the scroll-linked
+travelling object and the per-section statics. They ship as AVIF and WebP with a PNG fallback, never
+JPEG, at their native width and 60% of it. A fixed width ladder would not suit them: the mace is
+157px wide and the trombone 1099px.
+
+They were generated on a flat magenta field and keyed locally:
+
+```bash
+node scripts/cutout.mjs <shot.png> assets-src/cutouts/<name>.png
+node scripts/split-sheet.mjs <sheet.png> assets-src/cutouts name1,name2,name3
+```
+
+`cutout.mjs` samples the background from the corners, feathers the alpha between two distance
+thresholds, and despills a three-pixel band inward from the cut edge, where the render's own
+antialiasing mixed magenta into the object. `split-sheet.mjs` traces connected regions so several
+objects can share one generated frame, and drops stray render fragments by keeping only the largest.
+
+Magenta is the key colour because nothing in the set, brass, chrome, drum head or wood, comes near
+it.
+
+**These are stand-ins.** They are generic instruments, not the band's own. In particular the mace
+carries a European crown and eagle finial, which an NYSC band's mace very likely does not. Replace
+them with photographs of the band's actual gear when it can be shot: plain background, even daylight,
+one object per frame, and the same two scripts will process them.
+
 ## Layout
 
 ```

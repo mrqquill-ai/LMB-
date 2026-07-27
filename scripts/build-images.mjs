@@ -13,9 +13,11 @@ import sharp from 'sharp';
 
 const SRC_PHOTOS = 'assets-src/photos';
 const SRC_LOGOS = 'assets-src/logos';
+const SRC_CUTOUTS = 'assets-src/cutouts';
 const OUT_PHOTOS = 'public/assets/photos';
 const OUT_LOGOS = 'public/assets/logos';
 const OUT_SOCIAL = 'public/assets/social';
+const OUT_CUTOUTS = 'public/assets/cutouts';
 
 /** Covers 1x and 2x for every slot on the page, from a 390px phone up to 1440. */
 const WIDTHS = [480, 720, 1080, 1440];
@@ -153,6 +155,41 @@ async function buildLogo() {
   return { width, height };
 }
 
+/**
+ * Cut-outs keep an alpha channel, so they ship as AVIF and WebP with a PNG
+ * fallback and never a JPEG. Their widths come from the source rather than the
+ * shared ladder: a mace is 157px wide and a trombone 1099px, so a fixed ladder
+ * would either upscale or skip them entirely.
+ */
+async function buildCutout(file) {
+  const name = basename(file, extname(file));
+  const src = join(SRC_CUTOUTS, file);
+  const { width, height } = await sharp(src).metadata();
+
+  const widths = [...new Set([width, Math.round(width * 0.6)])]
+    .filter((w) => w >= 160)
+    .sort((a, b) => a - b);
+  if (widths.length === 0) widths.push(width);
+
+  let total = 0;
+  for (const target of widths) {
+    const resized = sharp(src).resize({ width: target, withoutEnlargement: true });
+    for (const [format, options] of [
+      ['avif', { quality: QUALITY.avif }],
+      ['webp', { quality: QUALITY.webp, alphaQuality: 90 }],
+      ['png', { compressionLevel: 9 }],
+    ]) {
+      const out = await resized.clone()[format](options).toFile(
+        join(OUT_CUTOUTS, `${name}-${target}.${format}`),
+      );
+      total += out.size;
+    }
+  }
+
+  console.log(`  ${name.padEnd(20)} ${width}x${height} -> ${widths.join('/')}w, ${kb(total)}`);
+  return { name, width, height, widths };
+}
+
 async function buildSocialCard() {
   const info = await sharp(join(SRC_PHOTOS, SOCIAL_SOURCE))
     // The source is a portrait phone photo, so let sharp pick the band of the
@@ -164,15 +201,21 @@ async function buildSocialCard() {
   console.log(`  ${'share-card'.padEnd(20)} 1200x630, ${kb(info.size)}`);
 }
 
-const [photoFiles] = await Promise.all([
+const [photoFiles, cutoutFiles] = await Promise.all([
   readdir(SRC_PHOTOS),
-  emptyDir(OUT_PHOTOS).then(() => Promise.all([emptyDir(OUT_LOGOS), emptyDir(OUT_SOCIAL)])),
+  readdir(SRC_CUTOUTS).catch(() => []),
+  emptyDir(OUT_PHOTOS)
+    .then(() => Promise.all([emptyDir(OUT_LOGOS), emptyDir(OUT_SOCIAL), emptyDir(OUT_CUTOUTS)])),
 ]);
 
 console.log('Building image derivatives:');
 const photos = [];
 for (const file of photoFiles.filter((f) => /\.(jpe?g|png)$/i.test(f))) {
   photos.push(await buildPhoto(file));
+}
+const cutouts = [];
+for (const file of cutoutFiles.filter((f) => /\.png$/i.test(f))) {
+  cutouts.push(await buildCutout(file));
 }
 const logo = await buildLogo();
 await buildSocialCard();
@@ -185,6 +228,9 @@ await writeFile(
     {
       widths: WIDTHS,
       photos: Object.fromEntries(photos.map((p) => [p.name, { width: p.width, height: p.height }])),
+      cutouts: Object.fromEntries(
+        cutouts.map((c) => [c.name, { width: c.width, height: c.height, widths: c.widths }]),
+      ),
       logo,
     },
     null,
