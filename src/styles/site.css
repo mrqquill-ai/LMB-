@@ -642,47 +642,106 @@ picture {
 
 /* ---------------------------------------------------------------------------
    About, the two arms
+
+   A pinned sequence rather than two columns side by side. The section is three
+   viewports tall; the stage sticks for the whole of it while the Brigade panel
+   wipes away left to right, the same direction the hero headline reveals,
+   uncovering the Choir panel underneath. Each photograph drifts through its own
+   frame as that happens.
    --------------------------------------------------------------------------- */
 
-.lmb-arms {
-  display: flex;
-  align-items: stretch;
-  gap: 56px;
+.lmb-arms-seq {
+  position: relative;
+  height: 300vh;
+  background: var(--surface-cream);
+  color: var(--text-on-cream);
+  /* clip rather than hidden: hidden on an ancestor kills position sticky. */
+  overflow: clip;
 }
 
-.lmb-arm {
-  flex: 1 1 0;
-  min-width: 260px;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-.lmb-arm-frame {
-  aspect-ratio: 4 / 5;
+.lmb-arms-stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100dvh;
   overflow: hidden;
+}
+
+.lmb-arms-label {
+  position: absolute;
+  top: clamp(104px, 14vh, 132px);
+  left: 56px;
+  right: 56px;
+  z-index: 4;
+  pointer-events: none;
+}
+
+.lmb-arms-title {
+  font-size: clamp(1.75rem, 3.4vw, 3rem);
+  max-width: 14ch;
+}
+
+.lmb-arm-stage {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 56px;
+  padding: clamp(200px, 30vh, 280px) 56px 72px;
+  background: var(--surface-cream);
+}
+
+/* The incoming panel sits on top and is revealed by its own clip. */
+.lmb-arm-stage-over {
+  z-index: 2;
+  clip-path: inset(0 100% 0 0);
+}
+
+.lmb-arm-media {
+  /* Copy on the left under the heading, photograph filling the right column. */
+  order: 2;
+  aspect-ratio: 4 / 5;
+  height: 100%;
+  justify-self: end;
   border-radius: 8px;
+  overflow: hidden;
   background: var(--surface-forest);
 }
 
-.lmb-arm-frame img {
+.lmb-arm-media-inner {
+  width: 100%;
+  height: 100%;
+  will-change: transform;
+}
+
+.lmb-arm-media-inner img {
   width: 100%;
   height: 112%;
   margin-top: -6%;
   object-fit: cover;
   object-position: 50% 30%;
   display: block;
-  will-change: transform;
 }
 
-/* Stands in for the choir photograph: the arm's name in the display face,
-   with the cadence rule beneath it. A composed panel, not a missing-asset note. */
+.lmb-arm-copy {
+  order: 1;
+  max-width: 42ch;
+  will-change: opacity, transform;
+}
+
+.lmb-arm-copy-text {
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--text-muted-on-cream);
+  margin: 0;
+}
+
 .lmb-arm-panel {
   position: relative;
-  aspect-ratio: 4 / 5;
-  border-radius: 8px;
+  width: 100%;
+  height: 100%;
   background: var(--surface-forest);
-  overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -710,7 +769,7 @@ picture {
   display: flex;
   align-items: baseline;
   gap: 14px;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 
 .lmb-arm-meta {
@@ -721,23 +780,25 @@ picture {
   font-weight: 600;
 }
 
-.lmb-arm-copy {
-  font-size: 0.9375rem;
-  line-height: 1.65;
-  color: var(--text-muted-on-cream);
-  margin: 0;
-  max-width: 40ch;
+/* Which arm you are on, in the cadence rule's own vocabulary. */
+.lmb-arms-beats {
+  position: absolute;
+  left: 56px;
+  bottom: 40px;
+  z-index: 4;
+  display: flex;
+  gap: 10px;
 }
 
-.lmb-arms-rule {
-  width: 1px;
-  flex-shrink: 0;
-  align-self: stretch;
-  background-image: repeating-linear-gradient(
-    to bottom,
-    var(--lmb-green-forest) 0 8px,
-    transparent 8px 15px
-  );
+.lmb-arms-beat {
+  width: 26px;
+  height: 2px;
+  background: rgba(11, 26, 18, 0.2);
+  transition: background 240ms var(--ease-out-strong);
+}
+
+.lmb-arms-beat.lmb-beat-on {
+  background: var(--lmb-green-forest);
 }
 
 /* ---------------------------------------------------------------------------
@@ -1485,6 +1546,50 @@ picture {
   opacity: 0.5;
 }
 
+/* Stacked fallback for the arms sequence. Pinning needs both viewport height
+   and motion; without either, the two arms simply follow one another. */
+.lmb-arms-seq-static {
+  height: auto;
+  padding: 104px 56px 96px;
+}
+
+.lmb-arms-seq-static .lmb-arms-stage {
+  position: static;
+  height: auto;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+  gap: 64px;
+}
+
+.lmb-arms-seq-static .lmb-arms-label {
+  position: static;
+  left: auto;
+  right: auto;
+}
+
+.lmb-arms-seq-static .lmb-arm-stage {
+  position: static;
+  padding: 0;
+  clip-path: none !important;
+  gap: 40px;
+}
+
+.lmb-arms-seq-static .lmb-arm-media {
+  height: auto;
+  justify-self: stretch;
+}
+
+.lmb-arms-seq-static .lmb-arm-media-inner,
+.lmb-arms-seq-static .lmb-arm-copy {
+  transform: none !important;
+  opacity: 1 !important;
+}
+
+.lmb-arms-seq-static .lmb-arms-beats {
+  display: none;
+}
+
 /* ---------------------------------------------------------------------------
    Responsive
    --------------------------------------------------------------------------- */
@@ -1584,6 +1689,50 @@ picture {
     padding: 24px;
   }
 
+  /* Not enough viewport height to pin an image, its copy and a heading. */
+  .lmb-arms-seq {
+    height: auto;
+    padding: 72px 28px 80px;
+  }
+
+  .lmb-arms-stage {
+    position: static;
+    height: auto;
+    overflow: visible;
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+  }
+
+  .lmb-arms-label {
+    position: static;
+    left: auto;
+    right: auto;
+  }
+
+  .lmb-arm-stage {
+    position: static;
+    padding: 0;
+    grid-template-columns: minmax(0, 1fr);
+    clip-path: none !important;
+    gap: 24px;
+  }
+
+  .lmb-arm-media {
+    height: auto;
+    justify-self: stretch;
+  }
+
+  .lmb-arm-media-inner,
+  .lmb-arm-copy {
+    transform: none !important;
+    opacity: 1 !important;
+  }
+
+  .lmb-arms-beats {
+    display: none;
+  }
+
   /* No gutters to travel through on a phone, so the mace comes off entirely.
      The statics stay: they read as edge bleeds at any width. */
   .lmb-mace {
@@ -1679,6 +1828,40 @@ picture {
   /* The mace's whole point is the travel, so with motion reduced it goes
      rather than sitting frozen in an arbitrary spot. */
   .lmb-mace {
+    display: none !important;
+  }
+
+  .lmb-arms-seq {
+    height: auto !important;
+    padding: 104px 56px 96px;
+  }
+
+  .lmb-arms-stage {
+    position: static !important;
+    height: auto !important;
+    overflow: visible !important;
+    display: flex;
+    flex-direction: column;
+    gap: 64px;
+  }
+
+  .lmb-arms-label {
+    position: static !important;
+  }
+
+  .lmb-arm-stage {
+    position: static !important;
+    padding: 0;
+    clip-path: none !important;
+    gap: 40px;
+  }
+
+  .lmb-arm-media {
+    height: auto;
+    justify-self: stretch;
+  }
+
+  .lmb-arms-beats {
     display: none !important;
   }
 }

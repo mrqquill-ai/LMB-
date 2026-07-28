@@ -160,6 +160,12 @@ One signature moment, everything else quiet, per the brief.
   replaced the photograph parallax rather than joining it: two scroll-linked behaviours competing in
   one viewport is where these pages start to feel busy.
 - **Section statics.** One instrument per section bleeding off an edge, purely CSS-positioned.
+- **The arms handover.** About is a pinned sequence three viewports tall. The stage sticks for the
+  whole of it while the Choir panel wipes in over Brigade, left to right, the same direction the hero
+  headline reveals. Each photograph drifts through its own frame as that happens, and warps on the
+  handover. Brigade comes first in the markup so it reads first; the Choir panel is layered on top
+  and revealed by its own clip, rather than being reordered with CSS, which would have left the
+  reading order wrong for a screen reader.
 - **Route transition.** The outgoing view fades and lifts out over 240ms before the incoming view
   enters. Back and forward are handled through `popstate`.
 - Easing is `cubic-bezier(0.16, 1, 0.3, 1)` everywhere. Nothing uses linear or a default ease.
@@ -168,7 +174,13 @@ One signature moment, everything else quiet, per the brief.
   frozen, since the travel is the whole point of it. The statics stay.
 
 Below 900px the mace comes off: there are no gutters for it to travel through and the copy runs the
-full width. The statics stay at every width, since an edge bleed reads at any size.
+full width. The statics stay at every width, since an edge bleed reads at any size. The arms
+sequence unpins there too, and under reduced motion, falling back to the two arms stacked one after
+the other: pinning needs both viewport height and motion.
+
+Note that pinning About costs the side-by-side reading of "two arms, one formation" at a glance, in
+exchange for each arm getting the full screen. The heading stays pinned above both to hold that
+idea, and two cadence marks at the foot show which arm you are on.
 
 The mace is mounted outside `<main>`. That element carries a transform during route transitions, and
 any transform on an ancestor makes `position: fixed` resolve against it instead of the viewport.

@@ -25,11 +25,17 @@ type Waypoint = {
 const ROUTE: Waypoint[] = [
   // Hero: upright in the open right-hand half of the type column.
   { at: 0, x: 0.485, y: 0.5, rotate: 0, scale: 1 },
-  // About and Gallery are cream and their copy runs the full container width,
-  // so the mace passes mostly off-canvas there rather than across the text.
-  { at: 0.3, x: 0.005, y: 0.46, rotate: -18, scale: 0.86 },
-  { at: 0.52, x: 0.95, y: 0.5, rotate: 14, scale: 0.74 },
-  { at: 0.8, x: 0.995, y: 0.46, rotate: 16, scale: 0.86 },
+  // About is a pinned sequence three viewports tall, so it holds the screen for
+  // a third of the page. The mace descends the left gutter through it rather
+  // than standing still, and stays clear of the heading and copy.
+  // Offset far enough left that the tilt does not swing the ferrule into the
+  // heading: a 526px object at 20 degrees is 180px wider than its own width.
+  { at: 0.13, x: -0.05, y: 0.3, rotate: -14, scale: 0.86 },
+  { at: 0.45, x: -0.05, y: 0.72, rotate: -20, scale: 0.86 },
+  // Services is deep green with open field to the right of the cards.
+  { at: 0.62, x: 0.95, y: 0.5, rotate: 14, scale: 0.74 },
+  // Gallery is cream and full width again, so back off the edge.
+  { at: 0.82, x: 0.995, y: 0.46, rotate: 16, scale: 0.86 },
   // Contact: plants upright in the gap between the copy and the form.
   { at: 1, x: 0.45, y: 0.5, rotate: 0, scale: 0.92 },
 ];
