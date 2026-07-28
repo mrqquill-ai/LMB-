@@ -27,7 +27,13 @@ export function useRoute() {
   const exitTimer = useRef<number>();
 
   const navigate = useCallback<Navigate>((next, push, hash) => {
-    if (next === routeRef.current && !hash) return;
+    // Already where we are being sent. Rather than doing nothing, return to the
+    // top: the crest is the way home from anywhere, including from halfway down
+    // the page you are already on.
+    if (next === routeRef.current && !hash) {
+      window.scrollTo({ top: 0, behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
+      return;
+    }
 
     const land = () => {
       setRoute(next);

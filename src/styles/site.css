@@ -24,6 +24,10 @@
   --text-faint-on-deep: rgba(247, 246, 241, 0.62);
   /* 4.92:1 on --surface-forest */
   --text-muted-on-forest: rgba(247, 246, 241, 0.8);
+
+  /* Every pill in the nav shares one height, so the crest, the links and the
+     menu button read as a matched set rather than three loose objects. */
+  --nav-control-h: 52px;
 }
 
 /* ---------------------------------------------------------------------------
@@ -211,7 +215,8 @@ picture {
 }
 
 .lmb-nav-scrolled .lmb-nav-logo-wrap {
-  padding: 4px 16px;
+  height: var(--nav-control-h);
+  padding: 0 16px;
   background: rgba(1, 58, 30, 0.72);
   backdrop-filter: blur(14px);
   box-shadow: inset 0 0 0 1px rgba(247, 246, 241, 0.14);
@@ -225,7 +230,7 @@ picture {
 }
 
 .lmb-nav-scrolled .lmb-nav-logo {
-  height: 46px;
+  height: calc(var(--nav-control-h) - 12px);
 }
 
 /* Contrast here is only measurable against the flat green field; the pill also
@@ -235,7 +240,8 @@ picture {
   display: flex;
   align-items: center;
   gap: 4px;
-  padding: 6px 6px 6px 22px;
+  height: var(--nav-control-h);
+  padding: 0 6px 0 22px;
   background: rgba(1, 58, 30, 0.72);
   backdrop-filter: blur(14px);
   border-radius: 10px;
@@ -285,6 +291,7 @@ picture {
   align-items: center;
   justify-content: center;
   min-width: 88px;
+  height: var(--nav-control-h);
   min-height: 44px;
   padding: 0 20px;
   font-family: var(--font-body);
@@ -671,7 +678,9 @@ picture {
   position: absolute;
   top: clamp(104px, 14vh, 132px);
   left: 56px;
-  right: 56px;
+  /* Bounded to its own text. Stretching to the far edge gave the label an
+     invisible full-width box that nothing could safely pass through. */
+  max-width: min(30ch, 46%);
   z-index: 4;
   pointer-events: none;
 }
@@ -1646,20 +1655,21 @@ picture {
   }
 
   /* The hero photograph sits behind the nav on small screens, so the crest gets
-     the same scrim pill the links use rather than a shadow. */
+     the same scrim pill the links use rather than a shadow. Same height as the
+     menu button opposite it, so the two read as a pair. */
   .lmb-nav-logo-wrap {
-    padding: 4px 14px;
+    height: var(--nav-control-h);
+    padding: 0 14px;
     background: rgba(1, 58, 30, 0.72);
     backdrop-filter: blur(14px);
     box-shadow: inset 0 0 0 1px rgba(247, 246, 241, 0.14);
   }
 
-  .lmb-nav-logo {
-    height: 52px;
-  }
-
+  /* Fixed on small screens: the pill is a constant height, so shrinking the
+     crest inside it on scroll would only make it look unmoored. */
+  .lmb-nav-logo,
   .lmb-nav-scrolled .lmb-nav-logo {
-    height: 40px;
+    height: calc(var(--nav-control-h) - 12px);
   }
 
   .lmb-nav-links {
