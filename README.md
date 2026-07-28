@@ -68,10 +68,19 @@ objects can share one generated frame, and drops stray render fragments by keepi
 Magenta is the key colour because nothing in the set, brass, chrome, drum head or wood, comes near
 it.
 
-**These are stand-ins.** They are generic instruments, not the band's own. In particular the mace
-carries a European crown and eagle finial, which an NYSC band's mace very likely does not. Replace
-them with photographs of the band's actual gear when it can be shot: plain background, even daylight,
-one object per frame, and the same two scripts will process them.
+The mace needed more work than the rest. It generated with a European crown and eagle finial, where
+a real marching mace of this kind carries a plain rounded ball. The finial is cut off at the cord
+binding, because the fluted socket above it flares upward and any cut through it leaves an open cup,
+and polished gold shows a flat cut edge that masking cannot shade away. `scripts/mace-head.mjs` then
+renders a replacement ball in the shaft's own material. It is drawn rather than photographed because
+the generation balance was spent; polished metal models well, being mostly a vertical environment
+gradient with a specular highlight, a fresnel rim and a warm bounce off the gold cord below. That
+script is a one-off already applied to the asset, and re-running it would stack a second head on the
+first.
+
+**These are all stand-ins.** They are generic instruments, not the band's own. Replace them with
+photographs of the band's actual gear when it can be shot: plain background, even daylight, one
+object per frame, and the same scripts will process them.
 
 ## Layout
 
