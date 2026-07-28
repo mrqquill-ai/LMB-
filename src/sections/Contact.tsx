@@ -1,6 +1,7 @@
 import type { MouseEvent } from 'react';
 import { BookingForm } from '../components/BookingForm';
 import { CadenceRule } from '../components/CadenceRule';
+import { Cutout } from '../components/Cutout';
 import { Logo } from '../components/Photo';
 import { contact, whatsappHref } from '../data/contact';
 import type { Navigate } from '../lib/useRoute';
@@ -30,6 +31,8 @@ export function Contact({ navigate }: Props) {
 
   return (
     <section id="contact" className="lmb-contact lmb-section-deep">
+      <Cutout name="hymnal" className="lmb-static lmb-static-hymnal" sizes="(max-width: 900px) 200px, 340px" />
+
       <div className="lmb-container">
         <CadenceRule tone="gold" style={{ marginBottom: 48 }} />
 

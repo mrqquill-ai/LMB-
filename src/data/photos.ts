@@ -1,10 +1,11 @@
 import sizeData from './imageSizes.json';
 
 /**
- * Intrinsic dimensions and the width ladder, written by `npm run images`.
- * Adding a photograph to `assets-src/photos/` and re-running that script widens
- * `PhotoName` automatically.
+ * Intrinsic dimensions and width ladders, written by `npm run images`.
+ * Adding an asset to `assets-src/` and re-running that script widens these
+ * types automatically.
  */
 export const photoSizes = sizeData;
 
 export type PhotoName = keyof typeof sizeData.photos;
+export type CutoutName = keyof typeof sizeData.cutouts;

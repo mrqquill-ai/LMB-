@@ -1399,6 +1399,93 @@ picture {
 }
 
 /* ---------------------------------------------------------------------------
+   Cut-outs
+
+   The mace travels the length of the page, pinned to the viewport, while each
+   section carries one static instrument bleeding off an edge. Both sit above
+   the section backgrounds and below the nav, and neither takes pointer events.
+   --------------------------------------------------------------------------- */
+
+.lmb-mace {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.lmb-mace-object {
+  /* Centres the object on the anchor point and carries its orientation, so
+     rotation pivots on the mace rather than the viewport corner. */
+  transform: translate(-50%, -50%);
+  will-change: transform;
+}
+
+.lmb-mace img {
+  /* Sized against the viewport height so the whole object stays visible,
+     tassels and ferrule included, rather than being cropped top and bottom. */
+  display: block;
+  height: min(68vh, 660px);
+  width: auto;
+  filter: drop-shadow(0 24px 40px rgba(1, 26, 12, 0.45));
+}
+
+.lmb-static {
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+  display: block;
+  height: auto;
+}
+
+/* Sections need a containing block for the statics, and their own content has
+   to sit above them. */
+.lmb-section,
+.lmb-contact {
+  position: relative;
+  overflow: hidden;
+}
+
+.lmb-section > .lmb-container,
+.lmb-contact > .lmb-container {
+  position: relative;
+  z-index: 1;
+}
+
+.lmb-static-cymbals {
+  width: 300px;
+  top: 6%;
+  right: -86px;
+  transform: rotate(-14deg);
+  opacity: 0.9;
+}
+
+.lmb-static-trumpet {
+  width: 460px;
+  bottom: 4%;
+  left: -140px;
+  transform: rotate(-8deg);
+  opacity: 0.72;
+}
+
+.lmb-static-drumsticks {
+  width: 200px;
+  top: 10%;
+  right: -48px;
+  transform: rotate(18deg);
+  opacity: 0.85;
+}
+
+.lmb-static-hymnal {
+  width: 340px;
+  bottom: 8%;
+  left: -110px;
+  transform: rotate(11deg);
+  opacity: 0.5;
+}
+
+/* ---------------------------------------------------------------------------
    Responsive
    --------------------------------------------------------------------------- */
 
@@ -1497,6 +1584,32 @@ picture {
     padding: 24px;
   }
 
+  /* No gutters to travel through on a phone, so the mace comes off entirely.
+     The statics stay: they read as edge bleeds at any width. */
+  .lmb-mace {
+    display: none;
+  }
+
+  .lmb-static-cymbals {
+    width: 180px;
+    right: -64px;
+  }
+
+  .lmb-static-trumpet {
+    width: 260px;
+    left: -96px;
+  }
+
+  .lmb-static-drumsticks {
+    width: 120px;
+    right: -30px;
+  }
+
+  .lmb-static-hymnal {
+    width: 200px;
+    left: -72px;
+  }
+
   .lmb-field-row {
     grid-template-columns: minmax(0, 1fr);
   }
@@ -1561,5 +1674,11 @@ picture {
 
   .lmb-dash {
     width: 88px !important;
+  }
+
+  /* The mace's whole point is the travel, so with motion reduced it goes
+     rather than sitting frozen in an arbitrary spot. */
+  .lmb-mace {
+    display: none !important;
   }
 }

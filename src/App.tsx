@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { NavBar } from './components/NavBar';
+import { TravellingMace } from './components/TravellingMace';
 import { useRoute } from './lib/useRoute';
 import { useScrolled } from './lib/useScrolled';
 import { About } from './sections/About';
@@ -31,6 +32,11 @@ export default function App() {
       </a>
 
       <NavBar route={route} scrolled={scrolled} navigate={navigate} />
+
+      {/* Outside <main>, which carries a transform during route transitions.
+          Any transform on an ancestor makes position:fixed resolve against it
+          instead of the viewport, which would strand the mace mid-page. */}
+      {route === 'home' && <TravellingMace />}
 
       <main
         id="main"

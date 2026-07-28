@@ -1,5 +1,6 @@
 import type { MouseEvent } from 'react';
 import { CadenceRule } from '../components/CadenceRule';
+import { Cutout } from '../components/Cutout';
 import { PackageCard } from '../components/PackageCard';
 import { previewPackages } from '../data/packages';
 import type { Navigate } from '../lib/useRoute';
@@ -17,6 +18,8 @@ export function ServicesPreview({ navigate }: Props) {
 
   return (
     <section id="services" className="lmb-section lmb-section-deep">
+      <Cutout name="trumpet" className="lmb-static lmb-static-trumpet" sizes="(max-width: 900px) 260px, 460px" />
+
       <div className="lmb-container">
         <CadenceRule tone="gold" style={{ marginBottom: 40 }} />
 

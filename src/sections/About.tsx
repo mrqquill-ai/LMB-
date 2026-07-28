@@ -1,17 +1,16 @@
 import { CadenceRule } from '../components/CadenceRule';
+import { Cutout } from '../components/Cutout';
 import { Photo } from '../components/Photo';
 import { choirPhoto } from '../data/content';
-import { useParallax } from '../lib/useParallax';
 
 /** Two columns from 901px, stacked below it. */
 const ARM_SIZES = '(max-width: 900px) 100vw, (max-width: 1352px) 45vw, 560px';
 
 export function About() {
-  const bandMajor = useParallax(48);
-  const choir = useParallax(48);
-
   return (
     <section id="about" className="lmb-section lmb-section-cream">
+      <Cutout name="cymbals" className="lmb-static lmb-static-cymbals" sizes="(max-width: 900px) 180px, 300px" />
+
       <div className="lmb-container">
         <CadenceRule tone="forest" style={{ marginBottom: 40 }} />
 
@@ -27,9 +26,8 @@ export function About() {
 
         <div className="lmb-arms">
           <div className="lmb-arm">
-            <div className="lmb-arm-frame" ref={bandMajor.frameRef}>
+            <div className="lmb-arm-frame">
               <Photo
-                ref={bandMajor.imageRef}
                 name="bandmajor-mace"
                 sizes={ARM_SIZES}
                 alt="Band major of the Lagos Musical Band holding the mace, drumline behind"
@@ -51,9 +49,8 @@ export function About() {
 
           <div className="lmb-arm">
             {choirPhoto ? (
-              <div className="lmb-arm-frame" ref={choir.frameRef}>
+              <div className="lmb-arm-frame">
                 <Photo
-                  ref={choir.imageRef}
                   name={choirPhoto.name}
                   sizes={ARM_SIZES}
                   alt={choirPhoto.alt}

@@ -143,13 +143,26 @@ One signature moment, everything else quiet, per the brief.
 - **Cadence load-in.** On Home, the gold dashed rule draws itself left to right, then the headline
   reveals line by line through a clip-path mask, 100ms apart. The seam between type and photograph
   draws downward, the photograph settles from a 1.06 scale, and the subhead and CTAs land last.
-- **Scroll-linked drift** on three photographs (band major, assembly, snare), tied to scroll
-  position rather than a fade once visible.
+- **The travelling mace.** The mace leads the formation down a street, so it leads the reader down
+  the page. It stands upright in the hero's open right-hand space, passes off-canvas through About,
+  swings out to the right across Services and Gallery, and plants itself upright beside the booking
+  form. It is `position: fixed` with its transform driven by page scroll progress, eased between
+  five waypoints held as fractions of the viewport so the route keeps its shape at any width. It
+  replaced the photograph parallax rather than joining it: two scroll-linked behaviours competing in
+  one viewport is where these pages start to feel busy.
+- **Section statics.** One instrument per section bleeding off an edge, purely CSS-positioned.
 - **Route transition.** The outgoing view fades and lifts out over 240ms before the incoming view
   enters. Back and forward are handled through `popstate`.
 - Easing is `cubic-bezier(0.16, 1, 0.3, 1)` everywhere. Nothing uses linear or a default ease.
-- **`prefers-reduced-motion: reduce`** drops the reveal, the parallax and the route transition.
-  Every element renders directly in its final state.
+- **`prefers-reduced-motion: reduce`** drops the reveal, the travelling mace and the route
+  transition. Every element renders directly in its final state. The mace is removed rather than
+  frozen, since the travel is the whole point of it. The statics stay.
+
+Below 900px the mace comes off: there are no gutters for it to travel through and the copy runs the
+full width. The statics stay at every width, since an edge bleed reads at any size.
+
+The mace is mounted outside `<main>`. That element carries a transform during route transitions, and
+any transform on an ancestor makes `position: fixed` resolve against it instead of the viewport.
 
 ## Accessibility notes
 
