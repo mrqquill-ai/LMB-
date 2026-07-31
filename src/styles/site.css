@@ -1152,6 +1152,76 @@ picture {
   }
 }
 
+/* Silent parade loop, set beside its copy. The footage is 9:16 phone video, so
+   the panel is given its natural portrait shape and capped in height rather
+   than stretched to match the text column. */
+/* Type left, footage right, echoing the hero's split rather than stranding the
+   copy against an empty right-hand half. */
+.lmb-motion {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 340px);
+  gap: 56px;
+  align-items: center;
+  margin-top: 72px;
+}
+
+.lmb-video {
+  position: relative;
+  border-radius: 9px;
+  overflow: hidden;
+  background: var(--lmb-green-deepest);
+}
+
+.lmb-video video {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 9 / 16;
+  object-fit: cover;
+}
+
+/* Always visible rather than revealed on hover: on a touchscreen there is no
+   hover, and this is the only way to stop the motion. */
+.lmb-video-toggle {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  border: 0;
+  border-radius: 999px;
+  padding: 8px 18px;
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--lmb-ink);
+  background: rgba(247, 246, 241, 0.92);
+  cursor: pointer;
+  transition: background 200ms var(--ease-out-strong);
+}
+
+.lmb-video-toggle:hover {
+  background: var(--lmb-gold);
+}
+
+.lmb-motion-copy p {
+  margin: 16px 0 0;
+  color: var(--text-muted-on-cream);
+  max-width: 46ch;
+}
+
+@media (max-width: 900px) {
+  .lmb-motion {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    margin-top: 56px;
+  }
+
+  .lmb-video {
+    max-width: 320px;
+  }
+}
+
 .lmb-events {
   display: flex;
   flex-wrap: wrap;

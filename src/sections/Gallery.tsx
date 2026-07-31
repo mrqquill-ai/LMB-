@@ -1,7 +1,9 @@
 import { CadenceRule } from '../components/CadenceRule';
 import { Cutout } from '../components/Cutout';
 import { Photo } from '../components/Photo';
+import { VideoLoop } from '../components/VideoLoop';
 import { testimonial } from '../data/content';
+import { paradeLoop } from '../data/videos';
 import { scrollToSection } from '../lib/scrollToSection';
 import type { PhotoName } from '../data/photos';
 
@@ -120,6 +122,24 @@ export function Gallery() {
             </figure>
           ))}
         </div>
+
+        {/* Sits inside the Gallery rather than taking a section of its own: the
+            travelling mace anchors its route to the top-level sections, and a
+            new one between Gallery and Contact would stretch that leg of the
+            journey across a screen with nothing in it. */}
+        {paradeLoop && (
+          <div className="lmb-motion">
+            <div className="lmb-motion-copy">
+              <div className="lmb-eyebrow lmb-eyebrow-forest">On the parade ground</div>
+              <h3 className="lmb-h2 lmb-measure-14">The formation, moving.</h3>
+              <p>
+                Ten seconds from a Lagos parade, the drum major out front and the drumline behind
+                him. Filmed by the band. It plays without sound.
+              </p>
+            </div>
+            <VideoLoop loop={paradeLoop} />
+          </div>
+        )}
 
         <div className="lmb-events">
           {EVENTS.map((event) => (
