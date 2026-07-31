@@ -65,7 +65,16 @@ export function useRoute() {
   }, []);
 
   useEffect(() => {
-    const onPopState = () => navigate(routeFromHash(), false);
+    // Only a genuine change of route needs the exit/enter transition. A pop that
+    // lands on the route we are already on is the browser undoing a fragment
+    // jump, and it restores scroll itself. Handing it to navigate() would take
+    // the "already here, so go home" branch and throw the reader up to the hero
+    // from wherever they were reading.
+    const onPopState = () => {
+      const next = routeFromHash();
+      if (next === routeRef.current) return;
+      navigate(next, false);
+    };
     window.addEventListener('popstate', onPopState);
     return () => {
       window.removeEventListener('popstate', onPopState);

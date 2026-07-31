@@ -2,6 +2,7 @@ import { CadenceRule } from '../components/CadenceRule';
 import { Cutout } from '../components/Cutout';
 import { Photo } from '../components/Photo';
 import { testimonial } from '../data/content';
+import { scrollToSection } from '../lib/scrollToSection';
 import type { PhotoName } from '../data/photos';
 
 /**
@@ -53,7 +54,18 @@ export function Gallery() {
             <div className="lmb-eyebrow lmb-eyebrow-forest">Past performances</div>
             <h2 className="lmb-h2 lmb-measure-14">See us on the street.</h2>
           </div>
-          <a href="#gallery" className="lmb-link-underline lmb-link-on-cream">
+          {/* Jumps past the lead pair to the grid. Handled in JS rather than
+              left as a bare fragment link: a raw href would overwrite the route
+              hash and leave a history entry that sends the back button to the
+              top of the page. */}
+          <a
+            href="#frames"
+            onClick={(event) => {
+              event.preventDefault();
+              scrollToSection('frames');
+            }}
+            className="lmb-link-underline lmb-link-on-cream"
+          >
             View the full gallery
           </a>
         </div>
@@ -90,7 +102,7 @@ export function Gallery() {
           </div>
         </div>
 
-        <div className="lmb-frames">
+        <div className="lmb-frames" id="frames">
           {FRAMES.map((frame) => (
             <figure
               key={frame.name}
