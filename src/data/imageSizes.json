@@ -14,13 +14,65 @@
       "width": 1920,
       "height": 2560
     },
+    "bassdrum-portrait": {
+      "width": 3024,
+      "height": 4032
+    },
+    "bassdrum-tilt": {
+      "width": 3024,
+      "height": 4032
+    },
+    "cymbals": {
+      "width": 3024,
+      "height": 4032
+    },
     "hero-saxophonist": {
       "width": 1920,
       "height": 2560
     },
+    "mace-bearer": {
+      "width": 3024,
+      "height": 4032
+    },
+    "parade-wide": {
+      "width": 4032,
+      "height": 3024
+    },
+    "sax-lead": {
+      "width": 3024,
+      "height": 4032
+    },
+    "sax-line": {
+      "width": 4284,
+      "height": 5712
+    },
     "snare-player": {
       "width": 1920,
       "height": 2560
+    },
+    "snare-smiling": {
+      "width": 4284,
+      "height": 5712
+    },
+    "snare-strike": {
+      "width": 4284,
+      "height": 5712
+    },
+    "sousaphone": {
+      "width": 2560,
+      "height": 2560
+    },
+    "trumpet-blue": {
+      "width": 3024,
+      "height": 4032
+    },
+    "trumpet-portrait": {
+      "width": 2560,
+      "height": 2560
+    },
+    "trumpet-raised": {
+      "width": 4284,
+      "height": 5712
     }
   },
   "cutouts": {

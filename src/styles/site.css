@@ -1086,6 +1086,72 @@ picture {
   line-height: 1.7;
 }
 
+/* The band's own parade photography.
+   Four columns, and the wide frame takes a two-by-two block, so the twelve
+   portraits and that one block tile a four-by-four field with no ragged row.
+   Row height comes from the portraits' own aspect ratio; the wide frame has
+   none and simply fills the two rows it spans. */
+.lmb-frames {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.lmb-frame {
+  margin: 0;
+  border-radius: 9px;
+  overflow: hidden;
+  aspect-ratio: 3 / 4;
+  background: rgba(1, 58, 30, 0.08);
+}
+
+.lmb-frame-wide {
+  grid-column: span 2;
+  grid-row: span 2;
+  aspect-ratio: auto;
+}
+
+.lmb-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 520ms var(--ease-out-strong);
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .lmb-frame:hover img {
+    transform: scale(1.04);
+  }
+}
+
+/* Three columns: the wide frame becomes a full-width banner, which again
+   leaves the twelve portraits sitting in whole rows. */
+@media (max-width: 1100px) {
+  .lmb-frames {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .lmb-frame-wide {
+    grid-column: span 3;
+    grid-row: span 1;
+    aspect-ratio: 16 / 9;
+  }
+}
+
+@media (max-width: 700px) {
+  .lmb-frames {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .lmb-frame-wide {
+    grid-column: span 2;
+    aspect-ratio: 3 / 2;
+  }
+}
+
 .lmb-events {
   display: flex;
   flex-wrap: wrap;
@@ -1827,7 +1893,8 @@ picture {
   .lmb-line,
   .lmb-fade,
   .lmb-photo,
-  .lmb-view {
+  .lmb-view,
+  .lmb-frame img {
     animation: none !important;
     transition: none !important;
     clip-path: none !important;

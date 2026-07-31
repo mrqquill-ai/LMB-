@@ -2,6 +2,34 @@ import { CadenceRule } from '../components/CadenceRule';
 import { Cutout } from '../components/Cutout';
 import { Photo } from '../components/Photo';
 import { testimonial } from '../data/content';
+import type { PhotoName } from '../data/photos';
+
+/**
+ * The band's own photography from the Lagos camp parades.
+ *
+ * Ordered for rhythm rather than by section of the band: no two neighbouring
+ * frames share an instrument, and the wide frame leads so the grid opens on
+ * the whole formation before it starts picking out players.
+ */
+const FRAMES: { name: PhotoName; alt: string; wide?: boolean }[] = [
+  {
+    name: 'parade-wide',
+    alt: 'The band on the march behind its mace bearer, instruments raised against an open sky',
+    wide: true,
+  },
+  { name: 'mace-bearer', alt: 'The band major carrying the mace, its tassels catching the light' },
+  { name: 'snare-smiling', alt: 'Snare drummer of the Lagos Musical Band resting between numbers' },
+  { name: 'bassdrum-tilt', alt: 'Bass drummer with the drum tilted across the shoulder' },
+  { name: 'trumpet-raised', alt: 'Trumpeter playing with the bell raised' },
+  { name: 'sax-lead', alt: 'Saxophonist at the head of the reed line' },
+  { name: 'cymbals', alt: 'Cymbal player mid-crash on the parade ground' },
+  { name: 'snare-strike', alt: 'Snare drummer mid-strike, sticks crossed over the head' },
+  { name: 'trumpet-blue', alt: 'Trumpeter playing a blue lacquered horn' },
+  { name: 'sousaphone', alt: 'Sousaphone player carrying the bass line through the formation' },
+  { name: 'bassdrum-portrait', alt: 'Bass drummer of the Lagos Musical Band, beater in hand' },
+  { name: 'sax-line', alt: 'Saxophonist playing with the rest of the band ranked behind' },
+  { name: 'trumpet-portrait', alt: 'Trumpeter of the Lagos Musical Band on the march' },
+];
 
 const EVENTS = [
   'Parades',
@@ -60,6 +88,25 @@ export function Gallery() {
               </figure>
             )}
           </div>
+        </div>
+
+        <div className="lmb-frames">
+          {FRAMES.map((frame) => (
+            <figure
+              key={frame.name}
+              className={`lmb-frame${frame.wide ? ' lmb-frame-wide' : ''}`}
+            >
+              <Photo
+                name={frame.name}
+                sizes={
+                  frame.wide
+                    ? '(max-width: 700px) 100vw, (max-width: 1100px) 66vw, 50vw'
+                    : '(max-width: 700px) 50vw, (max-width: 1100px) 33vw, 25vw'
+                }
+                alt={frame.alt}
+              />
+            </figure>
+          ))}
         </div>
 
         <div className="lmb-events">
