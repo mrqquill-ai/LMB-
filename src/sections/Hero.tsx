@@ -1,4 +1,5 @@
 import type { CSSProperties, MouseEvent } from 'react';
+import { Arrow } from '../components/Arrow';
 import { Photo } from '../components/Photo';
 import { fadeIn } from '../lib/motion';
 import { scrollToSection } from '../lib/scrollToSection';
@@ -71,7 +72,7 @@ export function Hero({ play }: Props) {
             </p>
             <div className="lmb-cta-row lmb-fade" style={fadeIn(play, 900)}>
               <a href="#contact" onClick={jumpTo('contact')} className="lmb-cta-solid">
-                Book The Band <span aria-hidden="true">&#8599;</span>
+                Book The Band <Arrow />
               </a>
               <a
                 href="#gallery"

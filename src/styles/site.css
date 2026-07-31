@@ -381,8 +381,12 @@ picture {
   color: var(--lmb-ink);
 }
 
-.lmb-cta-solid span {
-  font-size: 0.875rem;
+.lmb-arrow {
+  width: 0.95em;
+  height: 0.95em;
+  flex-shrink: 0;
+  /* Nudged to sit on the cap height rather than the baseline. */
+  margin-top: -0.05em;
 }
 
 .lmb-link-underline {

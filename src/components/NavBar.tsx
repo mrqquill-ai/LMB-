@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type MouseEvent } from 'react';
+import { Arrow } from './Arrow';
 import { Logo } from './Photo';
 import { whatsappHref } from '../data/contact';
 import { scrollToSection } from '../lib/scrollToSection';
@@ -125,7 +126,7 @@ export function NavBar({ route, scrolled, navigate }: Props) {
 
           <div className="lmb-menu-actions">
             <a href="#contact" onClick={goBooking} className="lmb-cta-solid">
-              Book the band <span aria-hidden="true">&#8599;</span>
+              Book the band <Arrow />
             </a>
             {whatsapp && (
               <a
