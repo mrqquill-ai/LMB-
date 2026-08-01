@@ -651,6 +651,57 @@ picture {
   object-position: 50% 22%;
 }
 
+/* Hero collage.
+
+   Three frames interlocking rather than one filling the column. Each overlaps
+   its neighbours, and the middle frame runs past the right edge so the group
+   reads as a crop of something larger rather than a tidy arrangement.
+
+   The ring is the deep green the hero already sits on. Overlapping photographs
+   need a boundary to read as separate planes; monochrome collages get that from
+   tone, and these are saturated enough to blur together without it. */
+.lmb-collage {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+
+.lmb-collage-frame {
+  position: absolute;
+  object-fit: cover;
+  box-shadow: 0 0 0 5px var(--surface-deep);
+}
+
+/* Sized so one frame leads. Cut to similar areas they compete, and the eye
+   finds no way in. The saxophonist is a single clear subject and takes the
+   lead; the other two are crowd frames and read as support. */
+.lmb-collage-a {
+  left: 0;
+  top: 9%;
+  width: 63%;
+  height: 66%;
+  object-position: 50% 20%;
+  z-index: 1;
+}
+
+.lmb-collage-b {
+  left: 54%;
+  top: 30%;
+  width: 50%;
+  height: 44%;
+  object-position: 50% 34%;
+  z-index: 3;
+}
+
+.lmb-collage-c {
+  left: 17%;
+  top: 70%;
+  width: 52%;
+  height: 25%;
+  object-position: 50% 48%;
+  z-index: 2;
+}
+
 /* ---------------------------------------------------------------------------
    About, the two arms
 
@@ -1649,30 +1700,6 @@ picture {
    the section backgrounds and below the nav, and neither takes pointer events.
    --------------------------------------------------------------------------- */
 
-.lmb-mace {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 10;
-  pointer-events: none;
-  will-change: transform;
-}
-
-.lmb-mace-object {
-  /* Centres the object on the anchor point and carries its orientation, so
-     rotation pivots on the mace rather than the viewport corner. */
-  transform: translate(-50%, -50%);
-  will-change: transform;
-}
-
-.lmb-mace img {
-  /* Sized against the viewport height so the whole object stays visible,
-     tassels and ferrule included, rather than being cropped top and bottom. */
-  display: block;
-  height: min(68vh, 660px);
-  width: auto;
-  filter: drop-shadow(0 24px 40px rgba(1, 26, 12, 0.45));
-}
 
 .lmb-static {
   position: absolute;
@@ -1814,6 +1841,21 @@ picture {
     max-height: 40vh;
   }
 
+  /* Three overlapping frames cannot be read at 390px, so the lead frame takes
+     the whole column and the other two come off. They are given a 1px sizes
+     hint so the browser never fetches a large candidate for them. */
+  .lmb-collage-a {
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    box-shadow: none;
+  }
+
+  .lmb-collage-b,
+  .lmb-collage-c {
+    display: none;
+  }
+
   .lmb-seam {
     width: 100%;
     height: 1px;
@@ -1921,11 +1963,6 @@ picture {
     display: none;
   }
 
-  /* No gutters to travel through on a phone, so the mace comes off entirely.
-     The statics stay: they read as edge bleeds at any width. */
-  .lmb-mace {
-    display: none;
-  }
 
   .lmb-static-cymbals {
     width: 180px;
@@ -2001,6 +2038,8 @@ picture {
   .lmb-line,
   .lmb-fade,
   .lmb-photo,
+  .lmb-collage,
+  .lmb-collage-frame,
   .lmb-view,
   .lmb-frame img {
     animation: none !important;
@@ -2014,11 +2053,6 @@ picture {
     width: 88px !important;
   }
 
-  /* The mace's whole point is the travel, so with motion reduced it goes
-     rather than sitting frozen in an arbitrary spot. */
-  .lmb-mace {
-    display: none !important;
-  }
 
   .lmb-arms-seq {
     height: auto !important;

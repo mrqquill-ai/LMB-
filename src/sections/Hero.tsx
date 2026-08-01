@@ -87,15 +87,34 @@ export function Hero({ play }: Props) {
 
         <div className="lmb-seam" style={seamStyle} aria-hidden="true" />
 
+        {/* Three frames overlapping rather than one filling the column. Only
+            the first is priority: it is the largest and topmost, so it is the
+            LCP candidate, and letting the other two compete for that slot would
+            slow the one that counts. */}
         <div className="lmb-photo-wrap">
-          <Photo
-            className="lmb-photo"
-            style={photoStyle}
-            name="hero-saxophonist"
-            sizes="(max-width: 900px) 100vw, 44vw"
-            priority
-            alt="Saxophonist of the Lagos Musical Band, low angle"
-          />
+          <div className="lmb-collage" style={photoStyle}>
+            <Photo
+              className="lmb-collage-frame lmb-collage-a"
+              name="hero-saxophonist"
+              sizes="(max-width: 900px) 100vw, 27vw"
+              priority
+              alt="Saxophonist of the Lagos Musical Band, low angle"
+            />
+            <Photo
+              className="lmb-collage-frame lmb-collage-b"
+              style={fadeIn(play, 520)}
+              name="bandmajor-mace"
+              sizes="(max-width: 900px) 1px, 26vw"
+              alt="Band major of the Lagos Musical Band holding the mace, drumline behind"
+            />
+            <Photo
+              className="lmb-collage-frame lmb-collage-c"
+              style={fadeIn(play, 660)}
+              name="parade-wide"
+              sizes="(max-width: 900px) 1px, 30vw"
+              alt="The band on the march, instruments raised against an open sky"
+            />
+          </div>
         </div>
       </div>
     </section>

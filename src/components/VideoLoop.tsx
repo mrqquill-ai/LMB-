@@ -49,7 +49,13 @@ export function VideoLoop({ video, active = true, className }: Props) {
         if (entry.isIntersecting) setNear(true);
         setOnScreen(entry.isIntersecting);
       },
-      { rootMargin: '100% 0px' },
+      // Not a screen early. The hero is 880px and the About sequence begins
+      // directly beneath it, so its first clip sits barely 80px below the fold:
+      // any positive margin fetched 1.5MB of video before the reader had
+      // scrolled at all. Loading on actual entry still gives it the whole
+      // pinned sequence to buffer, and a reader who never leaves the hero pays
+      // nothing.
+      { rootMargin: '0px' },
     );
     observer.observe(node);
     return () => observer.disconnect();

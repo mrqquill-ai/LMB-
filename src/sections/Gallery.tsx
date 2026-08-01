@@ -54,7 +54,6 @@ export function Gallery() {
   const grid = useRef<HTMLDivElement>(null);
 
   const shown = expanded ? FRAMES : FRAMES.slice(0, PREVIEW_COUNT);
-  const hiddenCount = FRAMES.length - PREVIEW_COUNT;
 
   const toggle = () => {
     // Collapsing from below the fold would otherwise leave the reader staring
@@ -86,7 +85,7 @@ export function Gallery() {
             aria-expanded={expanded}
             aria-controls="frames"
           >
-            {expanded ? 'Show fewer' : `View the full gallery (${hiddenCount} more)`}
+            {expanded ? 'Show fewer' : 'View more works'}
           </button>
         </div>
 
