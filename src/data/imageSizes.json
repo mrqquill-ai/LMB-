@@ -26,6 +26,10 @@
       "width": 3024,
       "height": 4032
     },
+    "hero-mace-tall": {
+      "width": 1086,
+      "height": 1448
+    },
     "hero-saxophonist": {
       "width": 1920,
       "height": 2560
@@ -33,10 +37,6 @@
     "mace-bearer": {
       "width": 3024,
       "height": 4032
-    },
-    "parade-tall": {
-      "width": 2056,
-      "height": 3024
     },
     "parade-wide": {
       "width": 4032,

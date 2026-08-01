@@ -7,7 +7,7 @@ type Props = {
 };
 
 const WIDE = 'parade-wide';
-const TALL = 'parade-tall';
+const TALL = 'hero-mace-tall';
 
 /** Below this the hero is taller than it is wide and needs the upright crop. */
 const TALL_MEDIA = '(max-width: 900px)';
@@ -20,9 +20,10 @@ const srcSet = (name: string, extension: string) =>
  *
  * One frame cannot do both shapes. The parade shot is 4:3, and cover-cropping
  * that into a 390 by 844 phone viewport keeps barely a third of its width: the
- * formation disappears and what is left is sky and a mace pole. So a second,
- * upright crop of the same photograph is cut from the original, holding the
- * band major and the ranks behind him.
+ * formation disappears and what is left is sky and a mace pole. The upright
+ * slot therefore holds a photograph composed vertically rather than a crop of a
+ * horizontal one: the band major with the mace raised, which leads the eye up
+ * the frame the way a tall viewport wants.
  *
  * Written as an explicit <picture> rather than through the shared Photo
  * component because the browser must pick exactly one of the two. Rendering

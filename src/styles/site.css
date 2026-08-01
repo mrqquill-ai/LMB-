@@ -1806,17 +1806,20 @@ picture {
   }
 
   /* Nothing sits beside the type now, so the wash runs top to bottom rather
-     than left to right. It is heavy only across the band the words occupy,
-     roughly 30% to 85% of the height, and lifts below that so the band major
-     and the ranks are actually visible instead of being flooded green. */
+     than left to right, and it thins upward. The upright frame puts everything
+     worth seeing high in it, the mace head, the sky, his face, and the previous
+     wash buried all of that to keep a clear strip at the bottom that held only
+     boots and tarmac. Opening the top costs contrast where the kicker and
+     headline sit, so it lifts gradually rather than all at once: measured at
+     glyph level, the kicker is the tightest at 5.87:1. */
   .lmb-hero-scrim {
     background: linear-gradient(
       to top,
-      rgba(1, 42, 22, 0.34) 0%,
-      rgba(1, 42, 22, 0.45) 12%,
-      rgba(1, 42, 22, 0.91) 28%,
-      rgba(1, 42, 22, 0.92) 86%,
-      rgba(1, 42, 22, 0.82) 100%
+      rgba(1, 42, 22, 0.94) 0%,
+      rgba(1, 42, 22, 0.93) 40%,
+      rgba(1, 42, 22, 0.8) 58%,
+      rgba(1, 42, 22, 0.62) 76%,
+      rgba(1, 42, 22, 0.45) 100%
     );
   }
 
