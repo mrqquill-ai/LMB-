@@ -1,7 +1,9 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Cutout } from '../components/Cutout';
 import { Photo } from '../components/Photo';
+import { VideoLoop } from '../components/VideoLoop';
 import { choirPhoto } from '../data/content';
+import { brigadeVideo, choirVideo } from '../data/videos';
 import { prefersReducedMotion } from '../lib/motion';
 import { subscribeScroll } from '../lib/scroll';
 
@@ -19,6 +21,10 @@ const clamp = (v: number) => Math.min(1, Math.max(0, v));
 
 export function About() {
   const section = useRef<HTMLElement>(null);
+  const still = prefersReducedMotion();
+  /** Which arm is on show. Drives which clip may play and be heard. */
+  const [arm, setArm] = useState(0);
+  const armRef = useRef(0);
   const media = useRef<(HTMLDivElement | null)[]>([]);
   const panels = useRef<(HTMLDivElement | null)[]>([]);
   const copies = useRef<(HTMLDivElement | null)[]>([]);
@@ -66,6 +72,14 @@ export function About() {
       beats.current.forEach((beat, i) => {
         if (beat) beat.classList.toggle('lmb-beat-on', i === 0 ? t < 0.5 : t >= 0.5);
       });
+
+      // Only on the crossing, not every tick: everything else here writes
+      // straight to the DOM precisely to keep React out of the scroll path.
+      const next = t < 0.5 ? 0 : 1;
+      if (next !== armRef.current) {
+        armRef.current = next;
+        setArm(next);
+      }
     });
   }, []);
 
@@ -87,13 +101,22 @@ export function About() {
 
         <div className="lmb-arm-stage" ref={setRef(panels, 0) as never}>
           <div className="lmb-arm-media">
-            <div className="lmb-arm-media-inner" ref={setRef(media, 0) as never}>
-              <Photo
-                name="bandmajor-mace"
-                sizes={ARM_SIZES}
-                alt="Band major of the Lagos Musical Band holding the mace, drumline behind"
-              />
-            </div>
+            {/* Footage sits outside the drifting wrapper. That wrapper is
+                transformed and its parent clips, so anything pinned to the
+                bottom of a video, the controls above all, gets pushed out of
+                the clip box and becomes unreachable. A clip is already moving
+                and gains nothing from parallax. */}
+            {brigadeVideo ? (
+              <VideoLoop video={brigadeVideo} active={still || arm === 0} />
+            ) : (
+              <div className="lmb-arm-media-inner" ref={setRef(media, 0) as never}>
+                <Photo
+                  name="bandmajor-mace"
+                  sizes={ARM_SIZES}
+                  alt="Band major of the Lagos Musical Band holding the mace, drumline behind"
+                />
+              </div>
+            )}
           </div>
           <div className="lmb-arm-copy" ref={setRef(copies, 0) as never}>
             <div className="lmb-arm-title-row">
@@ -112,16 +135,20 @@ export function About() {
             order wrong for a screen reader. */}
         <div className="lmb-arm-stage lmb-arm-stage-over" ref={setRef(panels, 1) as never}>
           <div className="lmb-arm-media">
-            <div className="lmb-arm-media-inner" ref={setRef(media, 1) as never}>
-              {choirPhoto ? (
-                <Photo name={choirPhoto.name} sizes={ARM_SIZES} alt={choirPhoto.alt} />
-              ) : (
-                <div className="lmb-arm-panel" aria-hidden="true">
-                  <span className="lmb-arm-panel-word">Choir</span>
-                  <span className="lmb-arm-panel-rule" />
-                </div>
-              )}
-            </div>
+            {choirVideo ? (
+              <VideoLoop video={choirVideo} active={still || arm === 1} />
+            ) : (
+              <div className="lmb-arm-media-inner" ref={setRef(media, 1) as never}>
+                {choirPhoto ? (
+                  <Photo name={choirPhoto.name} sizes={ARM_SIZES} alt={choirPhoto.alt} />
+                ) : (
+                  <div className="lmb-arm-panel" aria-hidden="true">
+                    <span className="lmb-arm-panel-word">Choir</span>
+                    <span className="lmb-arm-panel-rule" />
+                  </div>
+                )}
+              </div>
+            )}
           </div>
           <div className="lmb-arm-copy" ref={setRef(copies, 1) as never}>
             <div className="lmb-arm-title-row">

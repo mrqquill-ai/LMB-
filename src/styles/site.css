@@ -1152,22 +1152,14 @@ picture {
   }
 }
 
-/* Silent parade loop, set beside its copy. The footage is 9:16 phone video, so
-   the panel is given its natural portrait shape and capped in height rather
-   than stretched to match the text column. */
-/* Type left, footage right, echoing the hero's split rather than stranding the
-   copy against an empty right-hand half. */
-.lmb-motion {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 340px);
-  gap: 56px;
-  align-items: center;
-  margin-top: 72px;
-}
-
+/* Band footage, filling whichever frame holds it. The clips are 9:16 phone
+   video and the About arms are 4:5, so they are cropped rather than letterboxed
+   and the subject stays centred. */
 .lmb-video {
   position: relative;
-  border-radius: 9px;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
   overflow: hidden;
   background: var(--lmb-green-deepest);
 }
@@ -1175,24 +1167,35 @@ picture {
 .lmb-video video {
   display: block;
   width: 100%;
-  height: auto;
-  aspect-ratio: 9 / 16;
+  height: 100%;
   object-fit: cover;
 }
 
-/* Always visible rather than revealed on hover: on a touchscreen there is no
-   hover, and this is the only way to stop the motion. */
-.lmb-video-toggle {
+/* Always visible rather than revealed on hover: a touchscreen has no hover, and
+   these are the only way to stop the motion or to hear it. */
+/* hidden must beat the flex display, or the inactive arm's controls stay in the
+   layout and keep taking clicks. */
+.lmb-video-controls[hidden] {
+  display: none;
+}
+
+.lmb-video-controls {
   position: absolute;
   right: 12px;
   bottom: 12px;
+  display: flex;
+  gap: 8px;
+  z-index: 3;
+}
+
+.lmb-video-btn {
   border: 0;
   border-radius: 999px;
-  padding: 8px 18px;
+  padding: 8px 16px;
   font-family: var(--font-body);
   font-size: 0.6875rem;
   font-weight: 600;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--lmb-ink);
   background: rgba(247, 246, 241, 0.92);
@@ -1200,27 +1203,27 @@ picture {
   transition: background 200ms var(--ease-out-strong);
 }
 
-.lmb-video-toggle:hover {
+.lmb-video-btn:hover {
   background: var(--lmb-gold);
 }
 
-.lmb-motion-copy p {
-  margin: 16px 0 0;
-  color: var(--text-muted-on-cream);
-  max-width: 46ch;
+.lmb-video-btn[aria-pressed='true'] {
+  background: var(--lmb-gold);
 }
 
-@media (max-width: 900px) {
-  .lmb-motion {
-    grid-template-columns: 1fr;
-    gap: 28px;
-    margin-top: 56px;
+@media (max-width: 700px) {
+  .lmb-video-controls {
+    right: 8px;
+    bottom: 8px;
+    gap: 6px;
   }
 
-  .lmb-video {
-    max-width: 320px;
+  .lmb-video-btn {
+    padding: 7px 12px;
+    font-size: 0.625rem;
   }
 }
+
 
 .lmb-events {
   display: flex;
