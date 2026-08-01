@@ -1,6 +1,6 @@
 import type { CSSProperties, MouseEvent } from 'react';
 import { Arrow } from '../components/Arrow';
-import { Photo } from '../components/Photo';
+import { HeroBackdrop } from '../components/HeroBackdrop';
 import { fadeIn } from '../lib/motion';
 import { scrollToSection } from '../lib/scrollToSection';
 
@@ -26,11 +26,6 @@ export function Hero({ play }: Props) {
     animation: play ? 'lmb-dash-draw 520ms var(--ease-out-strong) 120ms forwards' : 'none',
   };
 
-  const seamStyle: CSSProperties = {
-    transform: play ? 'scaleY(1)' : 'scaleY(0)',
-    animation: play ? 'lmb-seam-draw 620ms var(--ease-out-strong) forwards' : 'none',
-  };
-
   const photoStyle: CSSProperties = {
     transform: play ? 'scale(1)' : 'scale(1.06)',
     animation: play ? 'lmb-photo-settle 1100ms var(--ease-out-strong) 80ms forwards' : 'none',
@@ -38,6 +33,15 @@ export function Hero({ play }: Props) {
 
   return (
     <section className="lmb-hero">
+      {/* The photograph is the hero now, not a panel beside it. It is the LCP
+          element, so it loads eagerly at high priority and is preloaded in
+          index.html with a matching srcset. */}
+      <HeroBackdrop
+        style={photoStyle}
+        alt="The Lagos Musical Band on the parade ground, the band major out front and the drumline and horns ranked behind"
+      />
+      <div className="lmb-hero-scrim" aria-hidden="true" />
+
       <div className="lmb-split">
         <div className="lmb-type">
           <div style={{ position: 'relative' }}>
@@ -85,37 +89,6 @@ export function Hero({ play }: Props) {
           </div>
         </div>
 
-        <div className="lmb-seam" style={seamStyle} aria-hidden="true" />
-
-        {/* Three frames overlapping rather than one filling the column. Only
-            the first is priority: it is the largest and topmost, so it is the
-            LCP candidate, and letting the other two compete for that slot would
-            slow the one that counts. */}
-        <div className="lmb-photo-wrap">
-          <div className="lmb-collage" style={photoStyle}>
-            <Photo
-              className="lmb-collage-frame lmb-collage-a"
-              name="hero-saxophonist"
-              sizes="(max-width: 900px) 100vw, 27vw"
-              priority
-              alt="Saxophonist of the Lagos Musical Band, low angle"
-            />
-            <Photo
-              className="lmb-collage-frame lmb-collage-b"
-              style={fadeIn(play, 520)}
-              name="bandmajor-mace"
-              sizes="(max-width: 900px) 1px, 26vw"
-              alt="Band major of the Lagos Musical Band holding the mace, drumline behind"
-            />
-            <Photo
-              className="lmb-collage-frame lmb-collage-c"
-              style={fadeIn(play, 660)}
-              name="parade-wide"
-              sizes="(max-width: 900px) 1px, 30vw"
-              alt="The band on the march, instruments raised against an open sky"
-            />
-          </div>
-        </div>
       </div>
     </section>
   );

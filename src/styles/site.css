@@ -143,14 +143,6 @@ picture {
   }
 }
 
-@keyframes lmb-seam-draw {
-  from {
-    transform: scaleY(0);
-  }
-  to {
-    transform: scaleY(1);
-  }
-}
 
 @keyframes lmb-line-reveal {
   from {
@@ -558,7 +550,41 @@ picture {
   overflow: hidden;
 }
 
+.lmb-hero-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Holds the band major and the ranks behind him rather than the sky. */
+  object-position: 50% 46%;
+  z-index: 0;
+  will-change: transform;
+}
+
+/* Type over a photograph needs the photograph held back, and this one is bright
+   the whole way across: open sky above, pale concrete below. The wash is
+   heaviest where the words sit and thins toward the right so the formation
+   still reads, with a foot at the bottom for the CTA row. Contrast is measured,
+   not eyeballed: every pairing clears AA against the lightest pixel it covers. */
+.lmb-hero-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(
+      96deg,
+      rgba(1, 42, 22, 0.95) 0%,
+      rgba(1, 42, 22, 0.9) 34%,
+      rgba(1, 42, 22, 0.5) 60%,
+      rgba(1, 42, 22, 0.26) 100%
+    ),
+    linear-gradient(to top, rgba(1, 42, 22, 0.6) 0%, rgba(1, 42, 22, 0) 38%);
+}
+
 .lmb-split {
+  position: relative;
+  z-index: 2;
   display: flex;
   align-items: stretch;
   min-height: min(880px, 100vh);
@@ -580,6 +606,14 @@ picture {
   height: 1px;
   margin-bottom: 22px;
   background-image: repeating-linear-gradient(to right, var(--lmb-gold) 0 8px, transparent 8px 15px);
+}
+
+/* Over the flat green this sat at 0.6 and cleared AA comfortably. Over a
+   photograph it measured 3.14:1 on a phone, so on the hero it is raised. The
+   scrim is deliberately not darkened further to fix it: that would cost the
+   photograph everywhere to rescue one line of small text. */
+.lmb-hero .lmb-kicker {
+  color: rgba(247, 246, 241, 0.9);
 }
 
 .lmb-kicker {
@@ -627,80 +661,9 @@ picture {
   flex-shrink: 0;
 }
 
-.lmb-seam {
-  width: 1px;
-  background: var(--lmb-gold);
-  flex-shrink: 0;
-  align-self: stretch;
-  transform-origin: top;
-}
 
-.lmb-photo-wrap {
-  width: 44%;
-  flex-shrink: 0;
-  position: relative;
-  overflow: hidden;
-}
 
-.lmb-photo {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: 50% 22%;
-}
 
-/* Hero collage.
-
-   Three frames interlocking rather than one filling the column. Each overlaps
-   its neighbours, and the middle frame runs past the right edge so the group
-   reads as a crop of something larger rather than a tidy arrangement.
-
-   The ring is the deep green the hero already sits on. Overlapping photographs
-   need a boundary to read as separate planes; monochrome collages get that from
-   tone, and these are saturated enough to blur together without it. */
-.lmb-collage {
-  position: absolute;
-  inset: 0;
-  will-change: transform;
-}
-
-.lmb-collage-frame {
-  position: absolute;
-  object-fit: cover;
-  box-shadow: 0 0 0 5px var(--surface-deep);
-}
-
-/* Sized so one frame leads. Cut to similar areas they compete, and the eye
-   finds no way in. The saxophonist is a single clear subject and takes the
-   lead; the other two are crowd frames and read as support. */
-.lmb-collage-a {
-  left: 0;
-  top: 9%;
-  width: 63%;
-  height: 66%;
-  object-position: 50% 20%;
-  z-index: 1;
-}
-
-.lmb-collage-b {
-  left: 54%;
-  top: 30%;
-  width: 50%;
-  height: 44%;
-  object-position: 50% 34%;
-  z-index: 3;
-}
-
-.lmb-collage-c {
-  left: 17%;
-  top: 70%;
-  width: 52%;
-  height: 25%;
-  object-position: 50% 48%;
-  z-index: 2;
-}
 
 /* ---------------------------------------------------------------------------
    About, the two arms
@@ -1835,30 +1798,26 @@ picture {
   /* A 4:5 photograph pushed the hero CTA about 300px below the fold on a
      390x844 phone. Capping the crop keeps the primary action in the first
      screen, which is where this site earns its bookings. */
-  .lmb-photo-wrap {
-    width: 100%;
-    aspect-ratio: 3 / 4;
-    max-height: 40vh;
+  /* The upright crop is 0.68 wide against a viewport nearer 0.46, so cover
+     scales it by height and trims the sides. Only the horizontal value does
+     anything here, and centred is what holds the band major. */
+  .lmb-hero-bg {
+    object-position: 50% 50%;
   }
 
-  /* Three overlapping frames cannot be read at 390px, so the lead frame takes
-     the whole column and the other two come off. They are given a 1px sizes
-     hint so the browser never fetches a large candidate for them. */
-  .lmb-collage-a {
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    box-shadow: none;
-  }
-
-  .lmb-collage-b,
-  .lmb-collage-c {
-    display: none;
-  }
-
-  .lmb-seam {
-    width: 100%;
-    height: 1px;
+  /* Nothing sits beside the type now, so the wash runs top to bottom rather
+     than left to right. It is heavy only across the band the words occupy,
+     roughly 30% to 85% of the height, and lifts below that so the band major
+     and the ranks are actually visible instead of being flooded green. */
+  .lmb-hero-scrim {
+    background: linear-gradient(
+      to top,
+      rgba(1, 42, 22, 0.34) 0%,
+      rgba(1, 42, 22, 0.45) 12%,
+      rgba(1, 42, 22, 0.91) 28%,
+      rgba(1, 42, 22, 0.92) 86%,
+      rgba(1, 42, 22, 0.82) 100%
+    );
   }
 
   .lmb-nav {
@@ -2034,12 +1993,9 @@ picture {
    parallax is skipped in JS, so no transform is written to the photographs. */
 @media (prefers-reduced-motion: reduce) {
   .lmb-dash,
-  .lmb-seam,
   .lmb-line,
   .lmb-fade,
-  .lmb-photo,
-  .lmb-collage,
-  .lmb-collage-frame,
+  .lmb-hero-bg,
   .lmb-view,
   .lmb-frame img {
     animation: none !important;
