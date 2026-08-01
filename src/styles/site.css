@@ -701,7 +701,11 @@ picture {
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   align-items: center;
   gap: 56px;
-  padding: clamp(200px, 30vh, 280px) 56px 72px;
+  /* The top inset exists to clear the pinned title. The title only ever sits in
+     the left column, so the media reclaims it below. */
+  --arm-pad-top: clamp(200px, 30vh, 280px);
+  --arm-media-top: 104px;
+  padding: var(--arm-pad-top) 56px 72px;
   background: var(--surface-cream);
 }
 
@@ -715,11 +719,16 @@ picture {
   /* Copy on the left under the heading, photograph filling the right column. */
   order: 2;
   aspect-ratio: 4 / 5;
-  height: 100%;
   justify-self: end;
   border-radius: 8px;
   overflow: hidden;
   background: var(--surface-forest);
+  /* Climbs back into the space the title's clearance reserved. It clears the
+     title by close to 600px horizontally, so it was never at risk of colliding
+     and was paying that height for nothing. Width follows height through the
+     aspect ratio, so the card gains on both axes. */
+  margin-top: calc(var(--arm-media-top) - var(--arm-pad-top));
+  height: calc(100% + var(--arm-pad-top) - var(--arm-media-top));
 }
 
 .lmb-arm-media-inner {
@@ -741,6 +750,16 @@ picture {
   order: 1;
   max-width: 42ch;
   will-change: opacity, transform;
+}
+
+/* The copy centres inside the padded box while the card now centres inside the
+   full stage, which left the two out of step and a gap under the title. The
+   same pull-up lines their centres up. Held back on short screens, where the
+   copy would rise far enough to crowd the title. */
+@media (min-height: 780px) {
+  .lmb-arm-copy {
+    margin-top: calc(var(--arm-media-top) - var(--arm-pad-top));
+  }
 }
 
 .lmb-arm-copy-text {
@@ -1224,6 +1243,17 @@ picture {
   }
 }
 
+
+/* The gallery toggle wears the underlined-link style but is a button, since it
+   controls the page rather than going anywhere. */
+.lmb-link-button {
+  border: 0;
+  background: none;
+  padding: 0;
+  font-family: inherit;
+  font-size: inherit;
+  cursor: pointer;
+}
 
 .lmb-events {
   display: flex;
@@ -1873,6 +1903,7 @@ picture {
 
   .lmb-arm-media {
     height: auto;
+    margin-top: 0;
     justify-self: stretch;
   }
 
@@ -1880,6 +1911,10 @@ picture {
   .lmb-arm-copy {
     transform: none !important;
     opacity: 1 !important;
+  }
+
+  .lmb-arm-copy {
+    margin-top: 0;
   }
 
   .lmb-arms-beats {
@@ -2008,6 +2043,11 @@ picture {
     padding: 0;
     clip-path: none !important;
     gap: 40px;
+  }
+
+  .lmb-arm-media,
+  .lmb-arm-copy {
+    margin-top: 0 !important;
   }
 
   .lmb-arm-media {

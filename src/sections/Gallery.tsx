@@ -1,3 +1,4 @@
+import { useRef, useState } from 'react';
 import { CadenceRule } from '../components/CadenceRule';
 import { Cutout } from '../components/Cutout';
 import { Photo } from '../components/Photo';
@@ -32,6 +33,13 @@ const FRAMES: { name: PhotoName; alt: string; wide?: boolean }[] = [
   { name: 'trumpet-portrait', alt: 'Trumpeter of the Lagos Musical Band on the march' },
 ];
 
+/**
+ * How many frames show before the reader asks for more. The wide frame spans a
+ * two by two block, so this fills the first two rows exactly and the grid never
+ * opens on a half-finished row.
+ */
+const PREVIEW_COUNT = 5;
+
 const EVENTS = [
   'Parades',
   'Matriculation marches',
@@ -42,6 +50,19 @@ const EVENTS = [
 ];
 
 export function Gallery() {
+  const [expanded, setExpanded] = useState(false);
+  const grid = useRef<HTMLDivElement>(null);
+
+  const shown = expanded ? FRAMES : FRAMES.slice(0, PREVIEW_COUNT);
+  const hiddenCount = FRAMES.length - PREVIEW_COUNT;
+
+  const toggle = () => {
+    // Collapsing from below the fold would otherwise leave the reader staring
+    // at whatever the page collapsed up to, so take them back to the grid.
+    if (expanded) scrollToSection('frames');
+    setExpanded((open) => !open);
+  };
+
   return (
     <section id="gallery" className="lmb-section lmb-section-cream">
       <Cutout name="drumsticks" className="lmb-static lmb-static-drumsticks" sizes="(max-width: 900px) 120px, 200px" />
@@ -58,16 +79,15 @@ export function Gallery() {
               left as a bare fragment link: a raw href would overwrite the route
               hash and leave a history entry that sends the back button to the
               top of the page. */}
-          <a
-            href="#frames"
-            onClick={(event) => {
-              event.preventDefault();
-              scrollToSection('frames');
-            }}
-            className="lmb-link-underline lmb-link-on-cream"
+          <button
+            type="button"
+            onClick={toggle}
+            className="lmb-link-underline lmb-link-on-cream lmb-link-button"
+            aria-expanded={expanded}
+            aria-controls="frames"
           >
-            View the full gallery
-          </a>
+            {expanded ? 'Show fewer' : `View the full gallery (${hiddenCount} more)`}
+          </button>
         </div>
 
         <div className="lmb-proof">
@@ -102,8 +122,10 @@ export function Gallery() {
           </div>
         </div>
 
-        <div className="lmb-frames" id="frames">
-          {FRAMES.map((frame) => (
+        {/* The rest are not rendered rather than hidden with CSS, so their
+            images are never fetched until someone asks to see them. */}
+        <div className="lmb-frames" id="frames" ref={grid}>
+          {shown.map((frame) => (
             <figure
               key={frame.name}
               className={`lmb-frame${frame.wide ? ' lmb-frame-wide' : ''}`}
