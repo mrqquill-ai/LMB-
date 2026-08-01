@@ -40,9 +40,13 @@ async function buildPhoto(file) {
   const image = sharp(join(SRC_PHOTOS, file));
   const { width, height } = await image.metadata();
   let total = 0;
+  // Only the widths at or under the source. Anything wider is never written, so
+  // it must never be advertised either: a candidate in a srcset that 404s is a
+  // broken image on exactly the densest screens, which are the ones that reach
+  // for it.
+  const widths = WIDTHS.filter((w) => w <= width);
 
-  for (const target of WIDTHS) {
-    if (target > width) continue;
+  for (const target of widths) {
     const resized = sharp(join(SRC_PHOTOS, file)).resize({ width: target, withoutEnlargement: true });
 
     for (const [format, options] of [
@@ -59,8 +63,8 @@ async function buildPhoto(file) {
     }
   }
 
-  console.log(`  ${name.padEnd(20)} ${width}x${height} -> ${WIDTHS.length} widths, ${kb(total)}`);
-  return { name, width, height };
+  console.log(`  ${name.padEnd(20)} ${width}x${height} -> ${widths.join('/')}w, ${kb(total)}`);
+  return { name, width, height, widths };
 }
 
 /** Alpha at or below this is invisible on screen but still reads as coverage. */
@@ -227,7 +231,9 @@ await writeFile(
   `${JSON.stringify(
     {
       widths: WIDTHS,
-      photos: Object.fromEntries(photos.map((p) => [p.name, { width: p.width, height: p.height }])),
+      photos: Object.fromEntries(
+        photos.map((p) => [p.name, { width: p.width, height: p.height, widths: p.widths }]),
+      ),
       cutouts: Object.fromEntries(
         cutouts.map((c) => [c.name, { width: c.width, height: c.height, widths: c.widths }]),
       ),

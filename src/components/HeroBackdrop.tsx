@@ -12,8 +12,11 @@ const TALL = 'hero-mace-tall';
 /** Below this the hero is taller than it is wide and needs the upright crop. */
 const TALL_MEDIA = '(max-width: 900px)';
 
-const srcSet = (name: string, extension: string) =>
-  photoSizes.widths.map((w) => `/assets/photos/${name}-${w}.${extension} ${w}w`).join(', ');
+/** Per crop, since the two are not the same size and do not get the same rungs. */
+const srcSet = (name: keyof typeof photoSizes.photos, extension: string) =>
+  photoSizes.photos[name].widths
+    .map((w) => `/assets/photos/${name}-${w}.${extension} ${w}w`)
+    .join(', ');
 
 /**
  * The hero photograph, art directed.
@@ -30,7 +33,8 @@ const srcSet = (name: string, extension: string) =>
  * both and hiding one in CSS would still fetch both, and this is the LCP image.
  */
 export function HeroBackdrop({ alt, style }: Props) {
-  const { width, height } = photoSizes.photos[WIDE];
+  const { width, height, widths } = photoSizes.photos[WIDE];
+  const fallbackWidth = widths[widths.length - 1];
 
   return (
     <picture>
@@ -41,7 +45,7 @@ export function HeroBackdrop({ alt, style }: Props) {
       <source type="image/webp" srcSet={srcSet(WIDE, 'webp')} sizes="100vw" />
       <img
         className="lmb-hero-bg"
-        src={`/assets/photos/${WIDE}-1440.jpg`}
+        src={`/assets/photos/${WIDE}-${fallbackWidth}.jpg`}
         srcSet={srcSet(WIDE, 'jpg')}
         sizes="100vw"
         alt={alt}

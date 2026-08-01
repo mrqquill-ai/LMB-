@@ -13,8 +13,15 @@ type Props = {
   style?: CSSProperties;
 };
 
-const srcSet = (name: string, extension: string) =>
-  photoSizes.widths.map((width) => `/assets/photos/${name}-${width}.${extension} ${width}w`).join(', ');
+/**
+ * Built from the widths actually written for this photograph, not the global
+ * ladder. A source narrower than the top rung never gets that rung, and naming
+ * it anyway hands the densest screens a candidate that 404s.
+ */
+const srcSet = (name: PhotoName, extension: string) =>
+  photoSizes.photos[name].widths
+    .map((width) => `/assets/photos/${name}-${width}.${extension} ${width}w`)
+    .join(', ');
 
 /**
  * Serves AVIF, then WebP, then a JPEG fallback, at four widths each. The
@@ -25,7 +32,8 @@ export const Photo = forwardRef<HTMLImageElement, Props>(function Photo(
   { name, alt, sizes, priority = false, className, style },
   ref,
 ) {
-  const { width, height } = photoSizes.photos[name];
+  const { width, height, widths } = photoSizes.photos[name];
+  const fallbackWidth = widths[widths.length - 1];
 
   return (
     <picture>
@@ -33,7 +41,7 @@ export const Photo = forwardRef<HTMLImageElement, Props>(function Photo(
       <source type="image/webp" srcSet={srcSet(name, 'webp')} sizes={sizes} />
       <img
         ref={ref}
-        src={`/assets/photos/${name}-1080.jpg`}
+        src={`/assets/photos/${name}-${fallbackWidth}.jpg`}
         srcSet={srcSet(name, 'jpg')}
         sizes={sizes}
         alt={alt}

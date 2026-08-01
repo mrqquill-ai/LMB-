@@ -8,75 +8,182 @@
   "photos": {
     "assembly-wide": {
       "width": 1920,
-      "height": 2560
+      "height": 2560,
+      "widths": [
+        480,
+        720,
+        1080,
+        1440
+      ]
     },
     "bandmajor-mace": {
       "width": 1920,
-      "height": 2560
+      "height": 2560,
+      "widths": [
+        480,
+        720,
+        1080,
+        1440
+      ]
     },
     "bassdrum-portrait": {
       "width": 3024,
-      "height": 4032
+      "height": 4032,
+      "widths": [
+        480,
+        720,
+        1080,
+        1440
+      ]
     },
     "bassdrum-tilt": {
       "width": 3024,
-      "height": 4032
+      "height": 4032,
+      "widths": [
+        480,
+        720,
+        1080,
+        1440
+      ]
     },
     "cymbals": {
       "width": 3024,
-      "height": 4032
+      "height": 4032,
+      "widths": [
+        480,
+        720,
+        1080,
+        1440
+      ]
     },
     "hero-mace-tall": {
       "width": 1086,
-      "height": 1448
+      "height": 1448,
+      "widths": [
+        480,
+        720,
+        1080
+      ]
     },
     "hero-saxophonist": {
       "width": 1920,
-      "height": 2560
+      "height": 2560,
+      "widths": [
+        480,
+        720,
+        1080,
+        1440
+      ]
     },
     "mace-bearer": {
       "width": 3024,
-      "height": 4032
+      "height": 4032,
+      "widths": [
+        480,
+        720,
+        1080,
+        1440
+      ]
     },
     "parade-wide": {
       "width": 4032,
-      "height": 3024
+      "height": 3024,
+      "widths": [
+        480,
+        720,
+        1080,
+        1440
+      ]
     },
     "sax-lead": {
       "width": 3024,
-      "height": 4032
+      "height": 4032,
+      "widths": [
+        480,
+        720,
+        1080,
+        1440
+      ]
     },
     "sax-line": {
       "width": 4284,
-      "height": 5712
+      "height": 5712,
+      "widths": [
+        480,
+        720,
+        1080,
+        1440
+      ]
     },
     "snare-player": {
       "width": 1920,
-      "height": 2560
+      "height": 2560,
+      "widths": [
+        480,
+        720,
+        1080,
+        1440
+      ]
     },
     "snare-smiling": {
       "width": 4284,
-      "height": 5712
+      "height": 5712,
+      "widths": [
+        480,
+        720,
+        1080,
+        1440
+      ]
     },
     "snare-strike": {
       "width": 4284,
-      "height": 5712
+      "height": 5712,
+      "widths": [
+        480,
+        720,
+        1080,
+        1440
+      ]
     },
     "sousaphone": {
       "width": 2560,
-      "height": 2560
+      "height": 2560,
+      "widths": [
+        480,
+        720,
+        1080,
+        1440
+      ]
     },
     "trumpet-blue": {
       "width": 3024,
-      "height": 4032
+      "height": 4032,
+      "widths": [
+        480,
+        720,
+        1080,
+        1440
+      ]
     },
     "trumpet-portrait": {
       "width": 2560,
-      "height": 2560
+      "height": 2560,
+      "widths": [
+        480,
+        720,
+        1080,
+        1440
+      ]
     },
     "trumpet-raised": {
       "width": 4284,
-      "height": 5712
+      "height": 5712,
+      "widths": [
+        480,
+        720,
+        1080,
+        1440
+      ]
     }
   },
   "cutouts": {

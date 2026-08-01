@@ -44,7 +44,9 @@
     />
     <!-- Preloads the LCP image at the width the viewport will actually pick.
          Without imagesrcset the preload pins one variant and a phone downloads
-         the desktop crop. Must stay in step with the sizes in Photo.tsx. -->
+         the desktop crop. Must stay in step with HeroBackdrop, including the
+         rungs: the upright crop is 1086 wide and so has no 1440, and naming one
+         here would have a dense screen preload a 404. -->
     <link
       rel="preload"
       as="image"
@@ -65,8 +67,7 @@
       imagesrcset="
         /assets/photos/hero-mace-tall-480.avif   480w,
         /assets/photos/hero-mace-tall-720.avif   720w,
-        /assets/photos/hero-mace-tall-1080.avif 1080w,
-        /assets/photos/hero-mace-tall-1440.avif 1440w"
+        /assets/photos/hero-mace-tall-1080.avif 1080w"
       imagesizes="100vw"
     />
 
