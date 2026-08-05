@@ -8,10 +8,10 @@
  */
 export const contact = {
   /** Digits only, international format, no plus or spaces. Example: '2348012345678'. */
-  whatsapp: null as string | null,
+  whatsapp: '2348039268110' as string | null,
   /** Display form; also used for the tel: link. Example: '+234 801 234 5678'. */
-  phone: null as string | null,
-  email: null as string | null,
+  phone: '+234 803 926 8110' as string | null,
+  email: 'nysclagosmusicband@gmail.com' as string | null,
   /** Handle without the @. Example: 'lagosmusicalband'. */
   instagram: null as string | null,
 };
