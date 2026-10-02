@@ -1198,6 +1198,14 @@ picture {
   margin-top: 24px;
 }
 
+/* The two-frame preview: a fixed pair rather than a slice of the responsive
+   grid above. Two tiles in two columns fills completely at any width, so this
+   needs no breakpoint overrides the way the full set does, and it wins over
+   the ones below through the compound selector rather than !important. */
+.lmb-frames.lmb-frames-preview {
+  grid-template-columns: repeat(2, 1fr);
+}
+
 .lmb-frame {
   margin: 0;
   border-radius: 9px;

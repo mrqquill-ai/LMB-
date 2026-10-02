@@ -34,15 +34,14 @@ const FRAMES: { name: PhotoName; alt: string; wide?: boolean }[] = [
 ];
 
 /**
- * How many frames show before the reader asks for more. No count under 12
- * tiles every breakpoint perfectly once the wide lead frame's own span is
- * subtracted from a grid that goes 4 columns to 3 to 2, so this picks the
- * count that is clean on desktop and on mobile, which is where this site's
- * traffic actually is. That leaves a two-cell trailing gap on the narrower
- * 3-column tablet band (901 to 1100px), a much thinner slice of real
- * traffic, and a smaller miss than a visible gap on desktop would be.
+ * How many frames show before the reader asks for more. Two, always rendered
+ * as a plain matched pair rather than tiled into the responsive grid: that
+ * sidesteps the column-count math entirely, since two tiles in two columns
+ * can never leave a gap at any width. The wide frame's dramatic 2x2 span is
+ * reserved for the full set on expand, where it has a formation's worth of
+ * photographs behind it to earn that scale.
  */
-const PREVIEW_COUNT = 5;
+const PREVIEW_COUNT = 2;
 
 const EVENTS = [
   'Parades',
@@ -127,23 +126,31 @@ export function Gallery() {
 
         {/* The rest are not rendered rather than hidden with CSS, so their
             images are never fetched until someone asks to see them. */}
-        <div className="lmb-frames" id="frames" ref={grid}>
-          {shown.map((frame) => (
-            <figure
-              key={frame.name}
-              className={`lmb-frame${frame.wide ? ' lmb-frame-wide' : ''}`}
-            >
-              <Photo
-                name={frame.name}
-                sizes={
-                  frame.wide
-                    ? '(max-width: 700px) 100vw, (max-width: 1100px) 66vw, 50vw'
-                    : '(max-width: 700px) 50vw, (max-width: 1100px) 33vw, 25vw'
-                }
-                alt={frame.alt}
-              />
-            </figure>
-          ))}
+        <div
+          className={`lmb-frames${expanded ? '' : ' lmb-frames-preview'}`}
+          id="frames"
+          ref={grid}
+        >
+          {shown.map((frame) => {
+            // The wide span is only worth its drama against the full set.
+            // Collapsed, both frames read as a plain, equal pair.
+            const wide = frame.wide && expanded;
+            return (
+              <figure key={frame.name} className={`lmb-frame${wide ? ' lmb-frame-wide' : ''}`}>
+                <Photo
+                  name={frame.name}
+                  sizes={
+                    wide
+                      ? '(max-width: 700px) 100vw, (max-width: 1100px) 66vw, 50vw'
+                      : expanded
+                        ? '(max-width: 700px) 50vw, (max-width: 1100px) 33vw, 25vw'
+                        : '(max-width: 700px) 50vw, 40vw'
+                  }
+                  alt={frame.alt}
+                />
+              </figure>
+            );
+          })}
         </div>
 
 
