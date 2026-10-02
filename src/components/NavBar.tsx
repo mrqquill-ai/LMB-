@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type MouseEvent } from 'react';
 import { Arrow } from './Arrow';
 import { Logo } from './Photo';
 import { whatsappHref } from '../data/contact';
+import { prefersReducedMotion } from '../lib/motion';
 import { scrollToSection } from '../lib/scrollToSection';
 import type { Navigate, Route } from '../lib/useRoute';
 
@@ -11,10 +12,18 @@ type Props = {
   navigate: Navigate;
 };
 
+/** Matches the duration of lmb-menu-out, so the node leaves the instant its
+ *  exit transition finishes rather than before or after it. */
+const SHEET_EXIT_DURATION = 200;
+
 export function NavBar({ route, scrolled, navigate }: Props) {
   const [menuOpen, setMenuOpen] = useState(false);
+  // Stays true a beat after menuOpen goes false, so the sheet plays an exit
+  // transition instead of vanishing on the same frame the state flips.
+  const [sheetMounted, setSheetMounted] = useState(false);
   const menuButton = useRef<HTMLButtonElement>(null);
   const sheet = useRef<HTMLDivElement>(null);
+  const closeTimer = useRef<number>();
 
   const go = (to: Route, hash?: string) => (event: MouseEvent) => {
     event.preventDefault();
@@ -31,7 +40,32 @@ export function NavBar({ route, scrolled, navigate }: Props) {
   };
 
   useEffect(() => {
-    if (!menuOpen) return;
+    window.clearTimeout(closeTimer.current);
+
+    if (menuOpen) {
+      setSheetMounted(true);
+      return;
+    }
+    if (!sheetMounted) return;
+
+    // Reduced motion gets the same instant-appear, instant-gone treatment as
+    // every other entrance on the site, rather than a cross-fade invented just
+    // for this one element.
+    if (prefersReducedMotion()) {
+      setSheetMounted(false);
+      return;
+    }
+
+    closeTimer.current = window.setTimeout(() => setSheetMounted(false), SHEET_EXIT_DURATION);
+    return () => window.clearTimeout(closeTimer.current);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [menuOpen, sheetMounted]);
+
+  // Keyed on sheetMounted rather than menuOpen, so the body stays locked and
+  // the dialog keeps the Escape key for the whole time the sheet is visible,
+  // including while it is animating out, not just while it is logically open.
+  useEffect(() => {
+    if (!sheetMounted) return;
 
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') setMenuOpen(false);
@@ -47,7 +81,7 @@ export function NavBar({ route, scrolled, navigate }: Props) {
       document.removeEventListener('keydown', onKeyDown);
       menuButton.current?.focus();
     };
-  }, [menuOpen]);
+  }, [sheetMounted]);
 
   const whatsapp = whatsappHref();
 
@@ -94,9 +128,9 @@ export function NavBar({ route, scrolled, navigate }: Props) {
         {menuOpen ? 'Close' : 'Menu'}
       </button>
 
-      {menuOpen && (
+      {sheetMounted && (
         <div
-          className="lmb-menu"
+          className={`lmb-menu${menuOpen ? '' : ' lmb-menu-closing'}`}
           id="lmb-menu"
           ref={sheet}
           role="dialog"

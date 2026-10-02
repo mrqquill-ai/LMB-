@@ -253,6 +253,11 @@ picture {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: rgba(247, 246, 241, 0.82);
+  transition: opacity 100ms var(--ease-out-strong);
+}
+
+.lmb-nav-link:active {
+  opacity: 0.6;
 }
 
 .lmb-nav-link-active {
@@ -276,6 +281,11 @@ picture {
   color: var(--lmb-ink);
 }
 
+.lmb-nav-cta:active {
+  transform: scale(0.96);
+  transition: transform 100ms var(--ease-out-strong);
+}
+
 /* Mobile menu. Set in the small-caps label style rather than an icon, since the
    design system deliberately ships without an icon set. */
 .lmb-menu-button {
@@ -297,6 +307,11 @@ picture {
   border: 1px solid rgba(247, 246, 241, 0.22);
   border-radius: 10px;
   cursor: pointer;
+  transition: transform 100ms var(--ease-out-strong);
+}
+
+.lmb-menu-button:active {
+  transform: scale(0.96);
 }
 
 .lmb-menu {
@@ -309,6 +324,33 @@ picture {
   justify-content: center;
   gap: 48px;
   padding: 96px 28px calc(48px + env(safe-area-inset-bottom));
+  /* A freshly mounted node always plays its keyframes from `from`, so the
+     enter needs no two-frame toggle trick the way a transition would. The
+     settle distance matches lmb-rise, the house value for every other
+     entrance on the site. */
+  animation: lmb-menu-in 220ms var(--ease-out-strong) forwards;
+}
+
+/* Applied once NavBar starts the close: an opaque full-screen panel that was
+   simply unmounting had nowhere to disappear to, which is exactly the "pops
+   out of existence" failure this is here to avoid. Mirrors lmb-menu-in so the
+   close reverses the same path the open used. */
+.lmb-menu-closing {
+  animation: lmb-menu-out 200ms var(--ease-out-strong) forwards;
+}
+
+@keyframes lmb-menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+@keyframes lmb-menu-out {
+  to {
+    opacity: 0;
+    transform: translateY(12px);
+  }
 }
 
 /* The sheet shares the header's stacking context, so the logo and the Close
@@ -336,6 +378,11 @@ picture {
   letter-spacing: -0.01em;
   color: var(--lmb-cream);
   padding: 6px 0;
+  transition: opacity 100ms var(--ease-out-strong);
+}
+
+.lmb-menu-links a:active {
+  opacity: 0.6;
 }
 
 .lmb-menu-link-active {
@@ -373,6 +420,11 @@ picture {
   color: var(--lmb-ink);
 }
 
+.lmb-cta-solid:active {
+  transform: scale(0.96);
+  transition: transform 100ms var(--ease-out-strong);
+}
+
 .lmb-arrow {
   width: 0.95em;
   height: 0.95em;
@@ -389,7 +441,12 @@ picture {
   padding-bottom: 3px;
   transition:
     color 180ms var(--ease-out-strong),
-    border-color 180ms var(--ease-out-strong);
+    border-color 180ms var(--ease-out-strong),
+    opacity 100ms var(--ease-out-strong);
+}
+
+.lmb-link-underline:active {
+  opacity: 0.6;
 }
 
 .lmb-link-on-dark {
@@ -1233,11 +1290,17 @@ picture {
   color: var(--lmb-ink);
   background: rgba(247, 246, 241, 0.92);
   cursor: pointer;
-  transition: background 200ms var(--ease-out-strong);
+  transition:
+    background 200ms var(--ease-out-strong),
+    transform 100ms var(--ease-out-strong);
 }
 
 .lmb-video-btn:hover {
   background: var(--lmb-gold);
+}
+
+.lmb-video-btn:active {
+  transform: scale(0.94);
 }
 
 .lmb-video-btn[aria-pressed='true'] {
@@ -2019,7 +2082,8 @@ picture {
   .lmb-fade,
   .lmb-hero-bg,
   .lmb-view,
-  .lmb-frame img {
+  .lmb-frame img,
+  .lmb-menu {
     animation: none !important;
     transition: none !important;
     clip-path: none !important;
@@ -2069,5 +2133,38 @@ picture {
 
   .lmb-arms-beats {
     display: none !important;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Reduced transparency and increased contrast
+
+   Three independent signals, not one. A visitor can want full motion but a
+   solid nav, or the reverse, so these stand apart from the reduced-motion
+   block above rather than folding into it. Every blurred surface on the site
+   lives in the nav, all three listed here, and --surface-deep is the exact
+   opaque colour the translucent rgba() on each of them is a tint of.
+   --------------------------------------------------------------------------- */
+
+@media (prefers-reduced-transparency: reduce) {
+  .lmb-nav-scrolled .lmb-nav-logo-wrap,
+  .lmb-nav-links,
+  .lmb-menu-button {
+    background: var(--surface-deep);
+    backdrop-filter: none;
+  }
+}
+
+@media (prefers-contrast: more) {
+  .lmb-nav-scrolled .lmb-nav-logo-wrap,
+  .lmb-nav-links,
+  .lmb-menu-button {
+    background: var(--surface-deep);
+    backdrop-filter: none;
+    box-shadow: inset 0 0 0 1.5px var(--lmb-cream);
+  }
+
+  .lmb-nav-link {
+    color: var(--lmb-cream);
   }
 }
