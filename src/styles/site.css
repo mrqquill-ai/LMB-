@@ -177,6 +177,15 @@ picture {
    Navigation
    --------------------------------------------------------------------------- */
 
+/* The bar's own padding is fixed at the tight (scrolled) size always; the
+   extra room at the top of the page is painted on with a transform instead,
+   so the shrink-on-scroll is a compositor-only transition (transform), not a
+   layout one (padding, which would recompute this box and its children on
+   every frame of the 420ms run). The two are visually identical: on a
+   single-line flex row with no explicit height, align-items: center has
+   nothing to centre against, so a child's offset from the bar's top edge is
+   just padding-top, and padding-top plus translateY sum to the same number
+   either way. */
 .lmb-nav {
   position: fixed;
   top: 0;
@@ -186,13 +195,14 @@ picture {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 28px 56px;
+  padding: 18px 56px;
   background: transparent;
-  transition: padding 420ms var(--ease-out-strong);
+  transform: translateY(10px);
+  transition: transform 420ms var(--ease-out-strong);
 }
 
 .lmb-nav-scrolled {
-  padding: 18px 56px;
+  transform: translateY(0);
 }
 
 .lmb-nav-logo-wrap {
@@ -1894,12 +1904,22 @@ picture {
     );
   }
 
+  /* Same tight-padding-plus-transform split as the desktop rule, just with
+     this breakpoint's own numbers: 14px is the permanent box, 6px is the
+     delta a 20px unscrolled padding used to cover. */
   .lmb-nav {
-    padding: 20px 28px;
+    padding: 14px 28px;
+    transform: translateY(6px);
   }
 
+  /* .lmb-nav and .lmb-nav-scrolled are both single-class selectors, so at
+     equal specificity the one that comes later in the file wins once this
+     media query is in effect — which was the rule above, unconditionally,
+     scrolled or not, until this reasserted the scrolled target afterward.
+     The desktop-scope .lmb-nav-scrolled rule needed no equivalent, since
+     nothing at that width comes after it to outrank it. */
   .lmb-nav-scrolled {
-    padding: 14px 28px;
+    transform: translateY(0);
   }
 
   /* The hero photograph sits behind the nav on small screens, so the crest gets
