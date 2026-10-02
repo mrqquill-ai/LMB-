@@ -36,12 +36,13 @@ const FRAMES: { name: PhotoName; alt: string; wide?: boolean }[] = [
 /**
  * How many frames show before the reader asks for more. No count under 12
  * tiles every breakpoint perfectly once the wide lead frame's own span is
- * subtracted from a grid that goes 4 columns to 3 to 2, so this is picked for
- * the smallest leftover: clean on the 3-column breakpoint, a single trailing
- * cell at 4 and at 2, rather than the two-cell gap three total frames would
- * leave on desktop.
+ * subtracted from a grid that goes 4 columns to 3 to 2, so this picks the
+ * count that is clean on desktop and on mobile, which is where this site's
+ * traffic actually is. That leaves a two-cell trailing gap on the narrower
+ * 3-column tablet band (901 to 1100px), a much thinner slice of real
+ * traffic, and a smaller miss than a visible gap on desktop would be.
  */
-const PREVIEW_COUNT = 4;
+const PREVIEW_COUNT = 5;
 
 const EVENTS = [
   'Parades',
