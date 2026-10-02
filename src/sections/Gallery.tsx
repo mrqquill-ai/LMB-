@@ -34,11 +34,14 @@ const FRAMES: { name: PhotoName; alt: string; wide?: boolean }[] = [
 ];
 
 /**
- * How many frames show before the reader asks for more. The wide frame spans a
- * two by two block, so this fills the first two rows exactly and the grid never
- * opens on a half-finished row.
+ * How many frames show before the reader asks for more. No count under 12
+ * tiles every breakpoint perfectly once the wide lead frame's own span is
+ * subtracted from a grid that goes 4 columns to 3 to 2, so this is picked for
+ * the smallest leftover: clean on the 3-column breakpoint, a single trailing
+ * cell at 4 and at 2, rather than the two-cell gap three total frames would
+ * leave on desktop.
  */
-const PREVIEW_COUNT = 5;
+const PREVIEW_COUNT = 4;
 
 const EVENTS = [
   'Parades',
